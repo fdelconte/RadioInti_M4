@@ -64,7 +64,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	int i;
+	
 
   /* USER CODE END 1 */
 

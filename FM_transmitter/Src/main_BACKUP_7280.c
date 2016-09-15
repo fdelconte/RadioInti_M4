@@ -64,7 +64,12 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	
+<<<<<<< HEAD
+	//esto es una prueba del git
 	int i;
+=======
+>>>>>>> d71eea653cdb8fe4e76ff820c5494347609b9160
 
   /* USER CODE END 1 */
 

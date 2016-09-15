@@ -32,9 +32,12 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-
 /* USER CODE BEGIN Includes */
 #define ARM_MATH_CM4
+<<<<<<< HEAD
+=======
+
+>>>>>>> 98f78d6fa3403b1571f253d99676eea3eaaf5428
 #include "arm_math.h"
 /* USER CODE END Includes */
 
@@ -58,13 +61,14 @@ static void MX_I2S2_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+#define BUFFER_LENGTH 100
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+<<<<<<< HEAD
 
 	
 	uint16_t pTxData[] = {0x5A5A, 0xF0F0};
@@ -75,6 +79,8 @@ int main(void)
 	
 	
 	
+=======
+>>>>>>> 98f78d6fa3403b1571f253d99676eea3eaaf5428
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -90,7 +96,10 @@ int main(void)
   MX_I2S2_Init();
 
   /* USER CODE BEGIN 2 */
-
+	uint32_t blockSize=BUFFER_LENGTH;
+	float32_t pSrcA[BUFFER_LENGTH]={1};
+	float32_t pSrcB[BUFFER_LENGTH]={2};
+	float32_t pDst[BUFFER_LENGTH];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,8 +107,9 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-
+	//*********************************************************
   /* USER CODE BEGIN 3 */
+<<<<<<< HEAD
 
 		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
 		{
@@ -111,8 +121,32 @@ int main(void)
 		
 		
 		
+=======
+	//*********************************************************
+		arm_mult_f32(pSrcA, pSrcB, pDst, blockSize );	
+		//void arm_mult_f32(float32_t * pSrcA, float32_t * pSrcB, float32_t * pDst, uint32_t blockSize );	
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
+		
+		arm_add_f32 (pSrcA, pSrcB, pDst, blockSize);
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
+		
+		arm_sub_f32 (pSrcA, pSrcB, pDst, blockSize);	
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
+>>>>>>> 98f78d6fa3403b1571f253d99676eea3eaaf5428
   }
+	
+	//*********************************************************
   /* USER CODE END 3 */
+	//*********************************************************
 
 }
 

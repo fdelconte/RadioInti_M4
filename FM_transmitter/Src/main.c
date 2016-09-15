@@ -32,9 +32,10 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-
 /* USER CODE BEGIN Includes */
+#define ARM_MATH_CM4
 
+#include "arm_math.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -57,15 +58,13 @@ static void MX_I2S2_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+#define BUFFER_LENGTH 100
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	int i;
-
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -81,7 +80,10 @@ int main(void)
   MX_I2S2_Init();
 
   /* USER CODE BEGIN 2 */
-
+	uint32_t blockSize=BUFFER_LENGTH;
+	float32_t pSrcA[BUFFER_LENGTH]={1};
+	float32_t pSrcB[BUFFER_LENGTH]={2};
+	float32_t pDst[BUFFER_LENGTH];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -89,11 +91,32 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-
+	//*********************************************************
   /* USER CODE BEGIN 3 */
-
+	//*********************************************************
+		arm_mult_f32(pSrcA, pSrcB, pDst, blockSize );	
+		//void arm_mult_f32(float32_t * pSrcA, float32_t * pSrcB, float32_t * pDst, uint32_t blockSize );	
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
+		
+		arm_add_f32 (pSrcA, pSrcB, pDst, blockSize);
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
+		
+		arm_sub_f32 (pSrcA, pSrcB, pDst, blockSize);	
+		//[in]	*pSrcA	points to the first input vector
+		//[in]	*pSrcB	points to the second input vector
+		//[out]	*pDst	points to the output vector
+		//[in]	blockSize	number of samples in each vector
   }
+	
+	//*********************************************************
   /* USER CODE END 3 */
+	//*********************************************************
 
 }
 

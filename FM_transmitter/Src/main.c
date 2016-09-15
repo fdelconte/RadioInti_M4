@@ -65,7 +65,6 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 	
-	//esto es una prueba del git
 
   /* USER CODE END 1 */
 

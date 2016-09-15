@@ -34,7 +34,8 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+#define ARM_MATH_CM4
+#include "arm_math.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -64,8 +65,16 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	int i;
 
+	
+	uint16_t pTxData[] = {0x5A5A, 0xF0F0};
+	uint16_t pRxData;
+	uint16_t Size = 2;
+	uint32_t Timeout = HAL_TIMEOUT;
+	
+	
+	
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -92,6 +101,16 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 
+		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
+		{
+			Error_Handler();
+		}
+		
+		
+
+		
+		
+		
   }
   /* USER CODE END 3 */
 

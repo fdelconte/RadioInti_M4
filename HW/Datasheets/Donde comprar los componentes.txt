@@ -1,0 +1,4 @@
+NE5532D8 -> GM
+NE5534D  -> GM
+
+STM32F4Discovery -> Elemon

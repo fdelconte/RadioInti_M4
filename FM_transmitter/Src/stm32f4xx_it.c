@@ -34,57 +34,38 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
-
-/* USER CODE BEGIN 0 */
-
-// Prueba
-
-/* USER CODE END 0 */
-
-/* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_spi2_tx;
-extern DMA_HandleTypeDef hdma_i2s2_ext_rx;
-
-/******************************************************************************/
-/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
-/******************************************************************************/
-
-/******************************************************************************/
-/* STM32F4xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32f4xx.s).                    */
-/******************************************************************************/
-
-/**
-* @brief This function handles DMA1 stream3 global interrupt.
-*/
-void DMA1_Stream3_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream3_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_i2s2_ext_rx);
-  /* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream3_IRQn 1 */
-}
-
-/**
-* @brief This function handles DMA1 stream4 global interrupt.
-*/
-void DMA1_Stream4_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream4_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream4_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi2_tx);
-  /* USER CODE BEGIN DMA1_Stream4_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream4_IRQn 1 */
-}
-
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+Expression requireSystemClockConfig is undefined on line 51, column 8 in stm32xx_it_c.ftl.
+The problematic instruction:
+----------
+==> if requireSystemClockConfig [on line 51, column 3 in stm32xx_it_c.ftl]
+----------
+Java backtrace for programmers:
+----------
+freemarker.core.InvalidReferenceException: Expression requireSystemClockConfig is undefined on line 51, column 8 in stm32xx_it_c.ftl.
+at freemarker.core.TemplateObject.assertNonNull(TemplateObject.java:124)
+at freemarker.core.Expression.isTrue(Expression.java:145)
+at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:77)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.MixedContent.accept(MixedContent.java:92)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:79)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.MixedContent.accept(MixedContent.java:92)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.Environment.visit(Environment.java:233)
+at freemarker.core.CompressedBlock.accept(CompressedBlock.java:73)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.MixedContent.accept(MixedContent.java:92)
+at freemarker.core.Environment.visit(Environment.java:196)
+at freemarker.core.Environment.process(Environment.java:176)
+at freemarker.template.Template.process(Template.java:232)
+at com.st.microxplorer.codegenerator.CodeEngine.freemarkerDo(CodeEngine.java:225)
+at com.st.microxplorer.codegenerator.CodeEngine.genCode(CodeEngine.java:164)
+at com.st.microxplorer.codegenerator.CodeGenerator.generateOutputCode(CodeGenerator.java:1707)
+at com.st.microxplorer.codegenerator.CodeGenerator.generatePeriphConfigCode(CodeGenerator.java:1026)
+at com.st.microxplorer.codegenerator.CodeGenerator.generateCodeFiles(CodeGenerator.java:816)
+at com.st.microxplorer.codegenerator.CodeGenerator.generateCode(CodeGenerator.java:555)
+at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.generateCode(ProjectBuilder.java:781)
+at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.createCode(ProjectBuilder.java:688)
+at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.createProject(ProjectBuilder.java:393)
+at com.st.microxplorer.plugins.projectmanager.engine.GenerateProjectThread.run(GenerateProjectThread.java:37)

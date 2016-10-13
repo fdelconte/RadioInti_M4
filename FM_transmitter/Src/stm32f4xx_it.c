@@ -34,38 +34,171 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
-Expression requireSystemClockConfig is undefined on line 51, column 8 in stm32xx_it_c.ftl.
-The problematic instruction:
-----------
-==> if requireSystemClockConfig [on line 51, column 3 in stm32xx_it_c.ftl]
-----------
-Java backtrace for programmers:
-----------
-freemarker.core.InvalidReferenceException: Expression requireSystemClockConfig is undefined on line 51, column 8 in stm32xx_it_c.ftl.
-at freemarker.core.TemplateObject.assertNonNull(TemplateObject.java:124)
-at freemarker.core.Expression.isTrue(Expression.java:145)
-at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:77)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.MixedContent.accept(MixedContent.java:92)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.ConditionalBlock.accept(ConditionalBlock.java:79)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.MixedContent.accept(MixedContent.java:92)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.Environment.visit(Environment.java:233)
-at freemarker.core.CompressedBlock.accept(CompressedBlock.java:73)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.MixedContent.accept(MixedContent.java:92)
-at freemarker.core.Environment.visit(Environment.java:196)
-at freemarker.core.Environment.process(Environment.java:176)
-at freemarker.template.Template.process(Template.java:232)
-at com.st.microxplorer.codegenerator.CodeEngine.freemarkerDo(CodeEngine.java:225)
-at com.st.microxplorer.codegenerator.CodeEngine.genCode(CodeEngine.java:164)
-at com.st.microxplorer.codegenerator.CodeGenerator.generateOutputCode(CodeGenerator.java:1707)
-at com.st.microxplorer.codegenerator.CodeGenerator.generatePeriphConfigCode(CodeGenerator.java:1026)
-at com.st.microxplorer.codegenerator.CodeGenerator.generateCodeFiles(CodeGenerator.java:816)
-at com.st.microxplorer.codegenerator.CodeGenerator.generateCode(CodeGenerator.java:555)
-at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.generateCode(ProjectBuilder.java:781)
-at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.createCode(ProjectBuilder.java:688)
-at com.st.microxplorer.plugins.projectmanager.engine.ProjectBuilder.createProject(ProjectBuilder.java:393)
-at com.st.microxplorer.plugins.projectmanager.engine.GenerateProjectThread.run(GenerateProjectThread.java:37)
+
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/* External variables --------------------------------------------------------*/
+extern I2S_HandleTypeDef hi2s2;
+
+/******************************************************************************/
+/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
+/******************************************************************************/
+
+/**
+* @brief This function handles Non maskable interrupt.
+*/
+void NMI_Handler(void)
+{
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+
+  /* USER CODE END NonMaskableInt_IRQn 1 */
+}
+
+/**
+* @brief This function handles Hard fault interrupt.
+*/
+void HardFault_Handler(void)
+{
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+  {
+  }
+  /* USER CODE BEGIN HardFault_IRQn 1 */
+
+  /* USER CODE END HardFault_IRQn 1 */
+}
+
+/**
+* @brief This function handles Memory management fault.
+*/
+void MemManage_Handler(void)
+{
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
+  {
+  }
+  /* USER CODE BEGIN MemoryManagement_IRQn 1 */
+
+  /* USER CODE END MemoryManagement_IRQn 1 */
+}
+
+/**
+* @brief This function handles Pre-fetch fault, memory access fault.
+*/
+void BusFault_Handler(void)
+{
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
+  {
+  }
+  /* USER CODE BEGIN BusFault_IRQn 1 */
+
+  /* USER CODE END BusFault_IRQn 1 */
+}
+
+/**
+* @brief This function handles Undefined instruction or illegal state.
+*/
+void UsageFault_Handler(void)
+{
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
+  {
+  }
+  /* USER CODE BEGIN UsageFault_IRQn 1 */
+
+  /* USER CODE END UsageFault_IRQn 1 */
+}
+
+/**
+* @brief This function handles System service call via SWI instruction.
+*/
+void SVC_Handler(void)
+{
+  /* USER CODE BEGIN SVCall_IRQn 0 */
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
+
+/**
+* @brief This function handles Debug monitor.
+*/
+void DebugMon_Handler(void)
+{
+  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
+}
+
+/**
+* @brief This function handles Pendable request for system service.
+*/
+void PendSV_Handler(void)
+{
+  /* USER CODE BEGIN PendSV_IRQn 0 */
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
+
+/**
+* @brief This function handles System tick timer.
+*/
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  HAL_SYSTICK_IRQHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
+
+/******************************************************************************/
+/* STM32F4xx Peripheral Interrupt Handlers                                    */
+/* Add here the Interrupt Handlers for the used peripherals.                  */
+/* For the available peripheral interrupt handler names,                      */
+/* please refer to the startup file (startup_stm32f4xx.s).                    */
+/******************************************************************************/
+
+/**
+* @brief This function handles SPI2 global interrupt.
+*/
+void SPI2_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI2_IRQn 0 */
+
+  /* USER CODE END SPI2_IRQn 0 */
+  HAL_I2S_IRQHandler(&hi2s2);
+  /* USER CODE BEGIN SPI2_IRQn 1 */
+
+  /* USER CODE END SPI2_IRQn 1 */
+}
+
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

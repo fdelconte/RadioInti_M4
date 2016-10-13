@@ -1,11 +1,19 @@
 #MicroXplorer Configuration settings - do not modify
 File.Version=6
+<<<<<<< HEAD
 I2S2.AudioFreq=I2S_AUDIOFREQ_192K
 I2S2.DataFormat=I2S_DATAFORMAT_24B
 I2S2.ErrorAudioFreq=-2.34 %
 I2S2.FullDuplexMode=I2S_FULLDUPLEXMODE_ENABLE
 I2S2.IPParameters=FullDuplexMode,RealAudioFreq,ErrorAudioFreq,DataFormat,AudioFreq
 I2S2.RealAudioFreq=187.5 KHz
+=======
+I2S2.AudioFreq=I2S_AUDIOFREQ_22K
+I2S2.ErrorAudioFreq=9.06 %
+I2S2.FullDuplexMode=I2S_FULLDUPLEXMODE_ENABLE
+I2S2.IPParameters=FullDuplexMode,RealAudioFreq,ErrorAudioFreq,AudioFreq
+I2S2.RealAudioFreq=23.995 KHz
+>>>>>>> eb72d148ad5a914284e74e765fdd09344f7efd7a
 KeepUserPlacement=true
 Mcu.Family=STM32F4
 Mcu.IP0=I2S2

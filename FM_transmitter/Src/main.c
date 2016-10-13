@@ -115,10 +115,6 @@ int main(void)
 		{
 			Error_Handler();
 		}
-		
-//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_RESET);
-//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_SET);
-		
 
 		
 //		//*********************************************************
@@ -219,7 +215,7 @@ static void MX_I2S2_Init(void)
   hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s2.Init.DataFormat = I2S_DATAFORMAT_24B;
   hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_192K;
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_22K;
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;

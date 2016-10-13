@@ -39,16 +39,17 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+I2S_HandleTypeDef hi2s2;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
+static void MX_I2S2_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -65,10 +66,10 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	
-	//uint16_t pTxData[] = {0x5A5A, 0xF0F0};
-	//uint16_t pRxData;
-	//uint16_t Size = 1;
-	//uint32_t Timeout = HAL_TIMEOUT;
+	uint16_t pTxData[] = {0x5A5A, 0xF0F0};
+	uint16_t pRxData;
+	uint16_t Size = 1;
+	uint32_t Timeout = HAL_TIMEOUT;
 	
 	
 	
@@ -85,6 +86,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_I2S2_Init();
 
   /* USER CODE BEGIN 2 */
 //	arm_biquad_cascade_df2T_instance_f32 *S;
@@ -97,6 +99,7 @@ int main(void)
 	//float32_t pSrcA[BUFFER_LENGTH]={1};
 	//float32_t pSrcB[BUFFER_LENGTH]={2};
 	//float32_t pDst[BUFFER_LENGTH];
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,16 +111,13 @@ int main(void)
   /* USER CODE BEGIN 3 */
 		
 		// Pruebas realizadas con el periférico I2S hechas por AGUSTINA DA. Continuo la semana que viene.
-//		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-//		{
-//			Error_Handler();
-//		}
-//		if (HAL_I2SEx_TransmitReceive(&hi2s3, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-//		{
-//			Error_Handler();
-//		}	
-		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_SET);
+		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
+		{
+			Error_Handler();
+		}
+		
+//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_SET);
 		
 
 		
@@ -163,6 +163,7 @@ void SystemClock_Config(void)
 
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
 
   __HAL_RCC_PWR_CLK_ENABLE();
 
@@ -193,6 +194,14 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S;
+  PeriphClkInitStruct.PLLI2S.PLLI2SN = 129;
+  PeriphClkInitStruct.PLLI2S.PLLI2SR = 6;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
@@ -201,18 +210,36 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+/* I2S2 init function */
+static void MX_I2S2_Init(void)
+{
+
+  hi2s2.Instance = SPI2;
+  hi2s2.Init.Mode = I2S_MODE_MASTER_TX;
+  hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
+  hi2s2.Init.DataFormat = I2S_DATAFORMAT_16B;
+  hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_192K;
+  hi2s2.Init.CPOL = I2S_CPOL_LOW;
+  hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
+  hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
+  if (HAL_I2S_Init(&hi2s2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+}
+
 /** Configure pins as 
         * Analog 
         * Input 
         * Output
         * EVENT_OUT
         * EXTI
-     PC3   ------> I2S2_SD
      PA4   ------> I2S3_WS
      PA5   ------> SPI1_SCK
      PA6   ------> SPI1_MISO
      PA7   ------> SPI1_MOSI
-     PB10   ------> I2S2_CK
      PC7   ------> I2S3_MCK
      PA9   ------> USB_OTG_FS_VBUS
      PA10   ------> USB_OTG_FS_ID
@@ -262,14 +289,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(OTG_FS_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PC3 */
-  GPIO_InitStruct.Pin = GPIO_PIN_3;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
@@ -297,14 +316,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PB10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LD4_Pin LD3_Pin LD5_Pin LD6_Pin 
                            Audio_RST_Pin */

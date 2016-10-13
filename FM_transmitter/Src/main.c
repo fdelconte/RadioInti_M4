@@ -40,7 +40,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2S_HandleTypeDef hi2s2;
-I2S_HandleTypeDef hi2s3;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -111,12 +110,7 @@ int main(void)
 		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
 		{
 			Error_Handler();
-		}
-		if (HAL_I2SEx_TransmitReceive(&hi2s3, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-		{
-			Error_Handler();
 		}		
-		
 
 		
 //		//*********************************************************

@@ -1,6 +1,6 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/franc/Documents/RadiosComunitarias/Proyecto/RadioInti_M4/FM_transmitter/Inc
-SourcePath=C:/Users/franc/Documents/RadiosComunitarias/Proyecto/RadioInti_M4/FM_transmitter/Src
+HeaderPath=C:/Users/Agustin/Documents/Workspace_STM/FM_transmitter/Inc
+SourcePath=C:/Users/Agustin/Documents/Workspace_STM/FM_transmitter/Src
 SourceFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;mxconstants.h;stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;mxconstants.h;
 

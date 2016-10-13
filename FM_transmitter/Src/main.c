@@ -115,10 +115,6 @@ int main(void)
 		{
 			Error_Handler();
 		}
-		
-//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_RESET);
-//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_SET);
-		
 
 		
 //		//*********************************************************

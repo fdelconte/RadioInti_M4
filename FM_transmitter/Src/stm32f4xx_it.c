@@ -190,7 +190,15 @@ void SysTick_Handler(void)
 void SPI2_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI2_IRQn 0 */
-
+	uint16_t pTxData[] = {0x8001, 0xFFFF, 0x8001, 0xFFFF};
+	uint16_t pRxData[10];
+	uint16_t Size = 4;
+	uint32_t Timeout = HAL_TIMEOUT;
+	
+	if (HAL_I2SEx_TransmitReceive_IT(&hi2s2, pTxData, pRxData, Size) != HAL_OK)
+  {
+		Size = 4;
+  }
   /* USER CODE END SPI2_IRQn 0 */
   HAL_I2S_IRQHandler(&hi2s2);
   /* USER CODE BEGIN SPI2_IRQn 1 */

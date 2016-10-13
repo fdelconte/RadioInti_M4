@@ -66,9 +66,9 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	
-	uint16_t pTxData[] = {0x5A5A, 0xF0F0};
-	uint16_t pRxData;
-	uint16_t Size = 2;
+	uint16_t pTxData[] = {0x8001, 0xFFFF, 0x8001, 0xFFFF};
+	uint16_t pRxData[10];
+	uint16_t Size = 4;
 	uint32_t Timeout = HAL_TIMEOUT;
 	
 	
@@ -100,6 +100,13 @@ int main(void)
 	//float32_t pSrcB[BUFFER_LENGTH]={2};
 	//float32_t pDst[BUFFER_LENGTH];
 	
+	
+			// Pruebas con I2S mediante INTERRUPCIONES
+			if (HAL_I2SEx_TransmitReceive_IT(&hi2s2, pTxData, pRxData, Size) != HAL_OK)
+			{
+				Error_Handler();
+			}
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,10 +118,13 @@ int main(void)
   /* USER CODE BEGIN 3 */
 		
 		// Pruebas realizadas con el periférico I2S hechas por AGUSTINA DA. Continuo la semana que viene.
-		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-		{
-			Error_Handler();
-		}
+//		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
+//		{
+//			Error_Handler();
+//		}
+		
+			
+
 
 		
 //		//*********************************************************
@@ -215,7 +225,7 @@ static void MX_I2S2_Init(void)
   hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s2.Init.DataFormat = I2S_DATAFORMAT_24B;
   hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_22K;
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_192K;
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
@@ -378,9 +388,11 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler */
+	uint32_t i = 0;
   /* User can add his own implementation to report the HAL error return state */
   while(1) 
   {
+		i++;
   }
   /* USER CODE END Error_Handler */ 
 }

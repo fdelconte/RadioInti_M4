@@ -40,11 +40,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2S_HandleTypeDef hi2s2;
-I2S_HandleTypeDef hi2s3;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -52,7 +50,6 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_I2S2_Init(void);
-static void MX_I2S3_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -90,13 +87,19 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2S2_Init();
-  MX_I2S3_Init();
 
   /* USER CODE BEGIN 2 */
-	uint32_t blockSize=BUFFER_LENGTH;
-	float32_t pSrcA[BUFFER_LENGTH]={1};
-	float32_t pSrcB[BUFFER_LENGTH]={2};
-	float32_t pDst[BUFFER_LENGTH];
+//	arm_biquad_cascade_df2T_instance_f32 *S;
+//	uint8_t numStages;
+//	float32_t *pCoeffs;
+//	float32_t *pState;
+//	arm_biquad_cascade_df2T_init_f32 (S,numStages,pCoeffs,pState);
+	
+	//uint32_t blockSize=BUFFER_LENGTH;
+	//float32_t pSrcA[BUFFER_LENGTH]={1};
+	//float32_t pSrcB[BUFFER_LENGTH]={2};
+	//float32_t pDst[BUFFER_LENGTH];
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,10 +115,9 @@ int main(void)
 		{
 			Error_Handler();
 		}
-		if (HAL_I2SEx_TransmitReceive(&hi2s3, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-		{
-			Error_Handler();
-		}		
+		
+//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin, GPIO_PIN_SET);
 		
 
 		
@@ -138,6 +140,14 @@ int main(void)
 //		//[in]	*pSrcB	points to the second input vector
 //		//[out]	*pDst	points to the output vector
 //		//[in]	blockSize	number of samples in each vector
+ 
+//	arm_biquad_cascade_df2T_f32(S,pSrcA,pDst,blockSize);
+	
+//	[in]	*S	points to an instance of the filter data structure.
+//	[in]	*pSrc	points to the block of input data.
+//	[out]	*pDst	points to the block of output data
+//	[in]	blockSize	number of samples to process.
+
 
   }
 	
@@ -164,9 +174,9 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 50;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLM = 14;
+  RCC_OscInitStruct.PLL.PLLN = 294;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -179,7 +189,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV8;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }
@@ -206,34 +216,14 @@ static void MX_I2S2_Init(void)
 
   hi2s2.Instance = SPI2;
   hi2s2.Init.Mode = I2S_MODE_MASTER_TX;
-  hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s2.Init.DataFormat = I2S_DATAFORMAT_32B;
+  hi2s2.Init.Standard = I2S_STANDARD_MSB;
+  hi2s2.Init.DataFormat = I2S_DATAFORMAT_24B;
   hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_192K;
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_22K;
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
   if (HAL_I2S_Init(&hi2s2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-}
-
-/* I2S3 init function */
-static void MX_I2S3_Init(void)
-{
-
-  hi2s3.Instance = SPI3;
-  hi2s3.Init.Mode = I2S_MODE_MASTER_TX;
-  hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s3.Init.DataFormat = I2S_DATAFORMAT_32B;
-  hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_192K;
-  hi2s3.Init.CPOL = I2S_CPOL_LOW;
-  hi2s3.Init.ClockSource = I2S_CLOCK_PLL;
-  hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
-  if (HAL_I2S_Init(&hi2s3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -246,13 +236,17 @@ static void MX_I2S3_Init(void)
         * Output
         * EVENT_OUT
         * EXTI
+     PA4   ------> I2S3_WS
      PA5   ------> SPI1_SCK
      PA6   ------> SPI1_MISO
      PA7   ------> SPI1_MOSI
+     PC7   ------> I2S3_MCK
      PA9   ------> USB_OTG_FS_VBUS
      PA10   ------> USB_OTG_FS_ID
      PA11   ------> USB_OTG_FS_DM
      PA12   ------> USB_OTG_FS_DP
+     PC10   ------> I2S3_CK
+     PC12   ------> I2S3_SD
      PB6   ------> I2C1_SCL
      PB9   ------> I2C1_SDA
 */
@@ -301,6 +295,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PA4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PA5 PA6 PA7 */
   GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -323,6 +325,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC7 PC10 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_10|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : VBUS_FS_Pin */
   GPIO_InitStruct.Pin = VBUS_FS_Pin;

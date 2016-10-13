@@ -45,8 +45,6 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-void SysTick_Handler(void);
-
 #ifdef __cplusplus
 }
 #endif

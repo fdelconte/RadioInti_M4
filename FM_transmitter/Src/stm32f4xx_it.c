@@ -36,11 +36,17 @@
 #include "stm32f4xx_it.h"
 
 /* USER CODE BEGIN 0 */
+volatile uint16_t pData[] = {0xFFFF, 0x5A5A, 0x0000, 0x8001};
+volatile uint16_t Size2 = 2;
 
+volatile uint16_t pTxData[] = {0xFFFF, 0x5A5A, 0x0000, 0x8001, 0xF00F, 0x0FF0};
+volatile uint16_t pRxData[10];
+volatile uint16_t Size = 3;
+volatile uint8_t variable = GPIO_PIN_RESET;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern I2S_HandleTypeDef hi2s2;
+extern I2S_HandleTypeDef hi2s3;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -185,25 +191,60 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-* @brief This function handles SPI2 global interrupt.
+* @brief This function handles SPI3 global interrupt.
 */
-void SPI2_IRQHandler(void)
+void SPI3_IRQHandler(void)
 {
-  /* USER CODE BEGIN SPI2_IRQn 0 */
-	uint16_t pTxData[] = {0x8001, 0xFFFF, 0x8001, 0xFFFF};
-	uint16_t pRxData[10];
-	uint16_t Size = 4;
-	uint32_t Timeout = HAL_TIMEOUT;
+  /* USER CODE BEGIN SPI3_IRQn 0 */
+//	if(hi2s3.RxXferCount == 0U)
+//	{
+//		/* Disable I2Sext RXNE interrupt */
+//		I2SxEXT(hi2s3.Instance)->CR2 &= ~I2S_IT_RXNE;
+//	}
+  /* USER CODE END SPI3_IRQn 0 */
+  HAL_I2S_IRQHandler(&hi2s3);
+  /* USER CODE BEGIN SPI3_IRQn 1 */
 	
-	if (HAL_I2SEx_TransmitReceive_IT(&hi2s2, pTxData, pRxData, Size) != HAL_OK)
-  {
-		Size = 4;
-  }
-  /* USER CODE END SPI2_IRQn 0 */
-  HAL_I2S_IRQHandler(&hi2s2);
-  /* USER CODE BEGIN SPI2_IRQn 1 */
+	
 
-  /* USER CODE END SPI2_IRQn 1 */
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Pruebas I2S
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Pruebas I2S3_TX
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+//	if (hi2s3.TxXferCount == 0U && hi2s3.Lock == HAL_UNLOCKED && hi2s3.State == HAL_I2S_STATE_READY)
+//	{
+//		if (HAL_I2S_Transmit_IT(&hi2s3, (uint16_t *) pData, Size2) != HAL_OK)
+//		{
+////			Error_Handler();
+//		}
+//	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Pruebas I2S3_ex_TX
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	if (hi2s3.TxXferCount == 0U && hi2s3.RxXferCount == 0U && hi2s3.Lock == HAL_UNLOCKED && hi2s3.State == HAL_I2S_STATE_READY)
+	{
+		if (HAL_I2SEx_TransmitReceive_IT(&hi2s3, (uint16_t *) pTxData, (uint16_t *) pRxData, Size) == HAL_OK)
+		{
+				if (variable)
+				{
+					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
+					variable = GPIO_PIN_RESET;
+				}
+				else if (!variable)
+				{
+					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+					variable = GPIO_PIN_SET;
+				}
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+			
+  /* USER CODE END SPI3_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

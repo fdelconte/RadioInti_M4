@@ -1,1 +1,11 @@
-Record=TopLevelDocument|FileName=Fuentes.SchDoc
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Conector de entrada|SchDesignator=Conector de entrada|FileName=Input.SchDoc|SymbolType=Normal|RawFileName=Input.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Conector de salida|SchDesignator=Conector de salida|FileName=Output.SchDoc|SymbolType=Normal|RawFileName=Output.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Discovery y AK4621|SchDesignator=Discovery y AK4621|FileName=STM_AK.SchDoc|SymbolType=Normal|RawFileName=STM_AK.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Entrada canal derecho|SchDesignator=Entrada canal derecho|FileName=INR.SchDoc|SymbolType=Normal|RawFileName=INR.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Entrada canal izquierdo|SchDesignator=Entrada canal izquierdo|FileName=INL.SchDoc|SymbolType=Normal|RawFileName=INL.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Fuentes|SchDesignator=Fuentes|FileName=Fuentes.SchDoc|SymbolType=Normal|RawFileName=Fuentes.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Ganancia CH derecho|SchDesignator=Ganancia CH derecho|FileName=GainCHR.SchDoc|SymbolType=Normal|RawFileName=GainCHR.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Ganancia CH izquierdo|SchDesignator=Ganancia CH izquierdo|FileName=GainCHL.SchDoc|SymbolType=Normal|RawFileName=GainCHL.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Salida canal derecho|SchDesignator=Salida canal derecho|FileName=OUTR.SchDoc|SymbolType=Normal|RawFileName=OUTR.SchDoc|ObjectKind=Sheet Symbol
+Record=SheetSymbol|SourceDocument=Radios_Comunitarias.SchDoc|Designator=Salida canal izquierdo|SchDesignator=Salida canal izquierdo|FileName=OUTL.SchDoc|SymbolType=Normal|RawFileName=OUTL.SchDoc|ObjectKind=Sheet Symbol
+Record=TopLevelDocument|FileName=Radios_Comunitarias.SchDoc

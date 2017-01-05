@@ -1,9 +1,9 @@
 Output: Bill of Materials
 Type  : BOM
-From  : Project [Radios_Comunitarias.PrjPcb]
+From  : Variant [[No Variations]] of Project [Radios_Comunitarias.PrjPcb]
 
 
 Files Generated   : 0
 Documents Printed : 0
 
-Finished Output Generation At 12:43:17 p.m. On 25/10/2016
+Finished Output Generation At 06:04:20 p.m. On 26/12/2016

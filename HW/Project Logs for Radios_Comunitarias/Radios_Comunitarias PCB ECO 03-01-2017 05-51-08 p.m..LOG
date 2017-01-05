@@ -1,0 +1,34 @@
+Added Component: Designator=U2(SOIC14)
+Added Component: Designator=U3(SOIC14)
+Added Pin To Net: NetName=GROUND Pin=U2-2
+Added Pin To Net: NetName=GROUND Pin=U2-3
+Added Pin To Net: NetName=VOP_ADC+ Pin=U2-4
+Added Pin To Net: NetName=NetC37_1 Pin=U2-5
+Added Pin To Net: NetName=NetC35_1 Pin=U2-6
+Added Pin To Net: NetName=NetC35_2 Pin=U2-7
+Added Pin To Net: NetName=NetC29_2 Pin=U2-8
+Added Pin To Net: NetName=NetR35_2 Pin=U2-9
+Added Pin To Net: NetName=GROUND Pin=U2-10
+Added Pin To Net: NetName=VOP_ADC- Pin=U2-11
+Added Pin To Net: NetName=NetC37_1 Pin=U2-12
+Added Pin To Net: NetName=NetC28_1 Pin=U2-13
+Added Pin To Net: NetName=NetC28_2 Pin=U2-14
+Added Pin To Net: NetName=GROUND Pin=U3-2
+Added Pin To Net: NetName=GROUND Pin=U3-3
+Added Pin To Net: NetName=VOP_ADC+ Pin=U3-4
+Added Pin To Net: NetName=NetC26_1 Pin=U3-5
+Added Pin To Net: NetName=NetC24_1 Pin=U3-6
+Added Pin To Net: NetName=NetC24_2 Pin=U3-7
+Added Pin To Net: NetName=NetC18_2 Pin=U3-8
+Added Pin To Net: NetName=NetR21_2 Pin=U3-9
+Added Pin To Net: NetName=GROUND Pin=U3-10
+Added Pin To Net: NetName=VOP_ADC- Pin=U3-11
+Added Pin To Net: NetName=NetC26_1 Pin=U3-12
+Added Pin To Net: NetName=NetC17_1 Pin=U3-13
+Added Pin To Net: NetName=NetC17_2 Pin=U3-14
+Added Pin To Net: NetName=VOP_ADC- Pin=U4-4
+Added Pin To Net: NetName=VOP_ADC+ Pin=U4-11
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-4
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-11
+Added Member To Class: ClassName=Entrada canal derecho Member=Component U2 4OPAMP
+Added Member To Class: ClassName=Entrada canal izquierdo Member=Component U3 4OPAMP

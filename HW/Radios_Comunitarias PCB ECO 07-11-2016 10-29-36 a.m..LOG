@@ -1,0 +1,8 @@
+Added Component: Designator=C5(Capael_10x16 RAD)
+Added Component: Designator=C11(Capael_10x16 RAD)
+Added Pin To Net: NetName=NetC5_1 Pin=C5-1
+Added Pin To Net: NetName=GROUND Pin=C5-2
+Added Pin To Net: NetName=GROUND Pin=C11-1
+Added Pin To Net: NetName=NetC11_2 Pin=C11-2
+Added Member To Class: ClassName=Fuentes Member=Component C5 1000UF 16V E
+Added Member To Class: ClassName=Fuentes Member=Component C11 1000UF 16V E

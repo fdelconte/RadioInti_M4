@@ -1,0 +1,4 @@
+Added Pin To Net: NetName=VOP_ADC- Pin=U4-4
+Added Pin To Net: NetName=VOP_ADC+ Pin=U4-11
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-4
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-11

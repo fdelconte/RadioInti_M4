@@ -1,0 +1,4 @@
+Added Component: Designator=C12(CAPAEL_8x10_SMD)
+Added Pin To Net: NetName=5V Pin=C12-1
+Added Pin To Net: NetName=GROUND Pin=C12-2
+Added Member To Class: ClassName=Fuentes Member=Component C12 330uF 25V T

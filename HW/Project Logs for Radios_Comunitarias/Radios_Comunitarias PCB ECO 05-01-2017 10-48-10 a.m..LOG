@@ -1,0 +1,12 @@
+Added Pin To Net: NetName=3V3 Pin=CN4-1
+Added Pin To Net: NetName=VOP_ADC+ Pin=U4-4
+Added Pin To Net: NetName=VOP_ADC- Pin=U4-11
+Added Pin To Net: NetName=VOP_ADC+ Pin=U11-4
+Added Pin To Net: NetName=VOP_ADC+ Pin=U11-11
+Change Net Name : Old Net Name=5V_EXT New Net Name=5VDISC
+Added Pin To Net: NetName=P1.3 Pin=U10-P1.3
+Added Pin To Net: NetName=P1.3 Pin=U10-P1.3
+Added Net: Name=P1.3
+Added Pin To Net: NetName=P1.4 Pin=U10-P1.4
+Added Pin To Net: NetName=P1.4 Pin=U10-P1.4
+Added Net: Name=P1.4

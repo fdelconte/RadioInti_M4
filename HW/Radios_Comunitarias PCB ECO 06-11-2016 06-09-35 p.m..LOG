@@ -1,0 +1,240 @@
+Added Component: Designator=JP1(Conn_2_1)
+Added Component: Designator=JP2(Conn_2_1)
+Added Component: Designator=JP3(Conn_2_1)
+Added Component: Designator=JP4(Conn_2_1)
+Added Pin To Net: NetName=NetCN2_2 Pin=JP1-1
+Added Pin To Net: NetName=NetJP1_3 Pin=JP1-2
+Added Pin To Net: NetName=NetJP1_3 Pin=JP2-1
+Added Pin To Net: NetName=NetC34_2 Pin=JP2-2
+Added Pin To Net: NetName=NetCN3_2 Pin=JP3-1
+Added Pin To Net: NetName=NetJP3_3 Pin=JP3-2
+Added Pin To Net: NetName=NetJP3_3 Pin=JP4-1
+Added Pin To Net: NetName=NetC53_2 Pin=JP4-2
+Change Net Name : Old Net Name=NetJP1_3 New Net Name=NetJP1_2
+Change Net Name : Old Net Name=NetJP3_3 New Net Name=NetJP3_2
+Added Pin To Net: NetName=P1.3 Pin=U9-P1.3
+Added Pin To Net: NetName=P1.3 Pin=U9-P1.3
+Added Net: Name=P1.3
+Added Pin To Net: NetName=P1.6 Pin=U9-P1.6
+Added Pin To Net: NetName=P1.6 Pin=U9-P1.6
+Added Net: Name=P1.6
+Added Pin To Net: NetName=P1.7 Pin=U9-P1.7
+Added Pin To Net: NetName=P1.7 Pin=U9-P1.7
+Added Net: Name=P1.7
+Added Pin To Net: NetName=P1.8 Pin=U9-P1.8
+Added Pin To Net: NetName=P1.8 Pin=U9-P1.8
+Added Net: Name=P1.8
+Added Pin To Net: NetName=P1.10 Pin=U9-P1.10
+Added Pin To Net: NetName=P1.10 Pin=U9-P1.10
+Added Net: Name=P1.10
+Added Pin To Net: NetName=P1.11 Pin=U9-P1.11
+Added Pin To Net: NetName=P1.11 Pin=U9-P1.11
+Added Net: Name=P1.11
+Added Pin To Net: NetName=P1.12 Pin=U9-P1.12
+Added Pin To Net: NetName=P1.12 Pin=U9-P1.12
+Added Net: Name=P1.12
+Added Pin To Net: NetName=P1.13 Pin=U9-P1.13
+Added Pin To Net: NetName=P1.13 Pin=U9-P1.13
+Added Net: Name=P1.13
+Added Pin To Net: NetName=P1.14 Pin=U9-P1.14
+Added Pin To Net: NetName=P1.14 Pin=U9-P1.14
+Added Net: Name=P1.14
+Added Pin To Net: NetName=P1.19 Pin=U9-P1.19
+Added Pin To Net: NetName=P1.19 Pin=U9-P1.19
+Added Net: Name=P1.19
+Added Pin To Net: NetName=P1.20 Pin=U9-P1.20
+Added Pin To Net: NetName=P1.20 Pin=U9-P1.20
+Added Net: Name=P1.20
+Added Pin To Net: NetName=P1.21 Pin=U9-P1.21
+Added Pin To Net: NetName=P1.21 Pin=U9-P1.21
+Added Net: Name=P1.21
+Added Pin To Net: NetName=P1.22 Pin=U9-P1.22
+Added Pin To Net: NetName=P1.22 Pin=U9-P1.22
+Added Net: Name=P1.22
+Added Pin To Net: NetName=P1.24 Pin=U9-P1.24
+Added Pin To Net: NetName=P1.24 Pin=U9-P1.24
+Added Net: Name=P1.24
+Added Pin To Net: NetName=P1.25 Pin=U9-P1.25
+Added Pin To Net: NetName=P1.25 Pin=U9-P1.25
+Added Net: Name=P1.25
+Added Pin To Net: NetName=P1.26 Pin=U9-P1.26
+Added Pin To Net: NetName=P1.26 Pin=U9-P1.26
+Added Net: Name=P1.26
+Added Pin To Net: NetName=P1.27 Pin=U9-P1.27
+Added Pin To Net: NetName=P1.27 Pin=U9-P1.27
+Added Net: Name=P1.27
+Added Pin To Net: NetName=P1.28 Pin=U9-P1.28
+Added Pin To Net: NetName=P1.28 Pin=U9-P1.28
+Added Net: Name=P1.28
+Added Pin To Net: NetName=P1.29 Pin=U9-P1.29
+Added Pin To Net: NetName=P1.29 Pin=U9-P1.29
+Added Net: Name=P1.29
+Added Pin To Net: NetName=P1.30 Pin=U9-P1.30
+Added Pin To Net: NetName=P1.30 Pin=U9-P1.30
+Added Net: Name=P1.30
+Added Pin To Net: NetName=P1.31 Pin=U9-P1.31
+Added Pin To Net: NetName=P1.31 Pin=U9-P1.31
+Added Net: Name=P1.31
+Added Pin To Net: NetName=P1.32 Pin=U9-P1.32
+Added Pin To Net: NetName=P1.32 Pin=U9-P1.32
+Added Net: Name=P1.32
+Added Pin To Net: NetName=P1.33 Pin=U9-P1.33
+Added Pin To Net: NetName=P1.33 Pin=U9-P1.33
+Added Net: Name=P1.33
+Added Pin To Net: NetName=P1.34 Pin=U9-P1.34
+Added Pin To Net: NetName=P1.34 Pin=U9-P1.34
+Added Net: Name=P1.34
+Added Pin To Net: NetName=P1.35 Pin=U9-P1.35
+Added Pin To Net: NetName=P1.35 Pin=U9-P1.35
+Added Net: Name=P1.35
+Added Pin To Net: NetName=P1.36 Pin=U9-P1.36
+Added Pin To Net: NetName=P1.36 Pin=U9-P1.36
+Added Net: Name=P1.36
+Added Pin To Net: NetName=P1.37 Pin=U9-P1.37
+Added Pin To Net: NetName=P1.37 Pin=U9-P1.37
+Added Net: Name=P1.37
+Added Pin To Net: NetName=P1.38 Pin=U9-P1.38
+Added Pin To Net: NetName=P1.38 Pin=U9-P1.38
+Added Net: Name=P1.38
+Added Pin To Net: NetName=P1.39 Pin=U9-P1.39
+Added Pin To Net: NetName=P1.39 Pin=U9-P1.39
+Added Net: Name=P1.39
+Added Pin To Net: NetName=P1.40 Pin=U9-P1.40
+Added Pin To Net: NetName=P1.40 Pin=U9-P1.40
+Added Net: Name=P1.40
+Added Pin To Net: NetName=P1.41 Pin=U9-P1.41
+Added Pin To Net: NetName=P1.41 Pin=U9-P1.41
+Added Net: Name=P1.41
+Added Pin To Net: NetName=P1.42 Pin=U9-P1.42
+Added Pin To Net: NetName=P1.42 Pin=U9-P1.42
+Added Net: Name=P1.42
+Added Pin To Net: NetName=P1.43 Pin=U9-P1.43
+Added Pin To Net: NetName=P1.43 Pin=U9-P1.43
+Added Net: Name=P1.43
+Added Pin To Net: NetName=P1.44 Pin=U9-P1.44
+Added Pin To Net: NetName=P1.44 Pin=U9-P1.44
+Added Net: Name=P1.44
+Added Pin To Net: NetName=P1.45 Pin=U9-P1.45
+Added Pin To Net: NetName=P1.45 Pin=U9-P1.45
+Added Net: Name=P1.45
+Added Pin To Net: NetName=P1.46 Pin=U9-P1.46
+Added Pin To Net: NetName=P1.46 Pin=U9-P1.46
+Added Net: Name=P1.46
+Added Pin To Net: NetName=P1.47 Pin=U9-P1.47
+Added Pin To Net: NetName=P1.47 Pin=U9-P1.47
+Added Net: Name=P1.47
+Added Pin To Net: NetName=P1.48 Pin=U9-P1.48
+Added Pin To Net: NetName=P1.48 Pin=U9-P1.48
+Added Net: Name=P1.48
+Added Pin To Net: NetName=P2.5 Pin=U9-P2.5
+Added Pin To Net: NetName=P2.5 Pin=U9-P2.5
+Added Net: Name=P2.5
+Added Pin To Net: NetName=P2.6 Pin=U9-P2.6
+Added Pin To Net: NetName=P2.6 Pin=U9-P2.6
+Added Net: Name=P2.6
+Added Pin To Net: NetName=P2.7 Pin=U9-P2.7
+Added Pin To Net: NetName=P2.7 Pin=U9-P2.7
+Added Net: Name=P2.7
+Added Pin To Net: NetName=P2.8 Pin=U9-P2.8
+Added Pin To Net: NetName=P2.8 Pin=U9-P2.8
+Added Net: Name=P2.8
+Added Pin To Net: NetName=P2.9 Pin=U9-P2.9
+Added Pin To Net: NetName=P2.9 Pin=U9-P2.9
+Added Net: Name=P2.9
+Added Pin To Net: NetName=P2.10 Pin=U9-P2.10
+Added Pin To Net: NetName=P2.10 Pin=U9-P2.10
+Added Net: Name=P2.10
+Added Pin To Net: NetName=P2.11 Pin=U9-P2.11
+Added Pin To Net: NetName=P2.11 Pin=U9-P2.11
+Added Net: Name=P2.11
+Added Pin To Net: NetName=P2.12 Pin=U9-P2.12
+Added Pin To Net: NetName=P2.12 Pin=U9-P2.12
+Added Net: Name=P2.12
+Added Pin To Net: NetName=P2.13 Pin=U9-P2.13
+Added Pin To Net: NetName=P2.13 Pin=U9-P2.13
+Added Net: Name=P2.13
+Added Pin To Net: NetName=P2.14 Pin=U9-P2.14
+Added Pin To Net: NetName=P2.14 Pin=U9-P2.14
+Added Net: Name=P2.14
+Added Pin To Net: NetName=P2.15 Pin=U9-P2.15
+Added Pin To Net: NetName=P2.15 Pin=U9-P2.15
+Added Net: Name=P2.15
+Added Pin To Net: NetName=P2.16 Pin=U9-P2.16
+Added Pin To Net: NetName=P2.16 Pin=U9-P2.16
+Added Net: Name=P2.16
+Added Pin To Net: NetName=P2.17 Pin=U9-P2.17
+Added Pin To Net: NetName=P2.17 Pin=U9-P2.17
+Added Net: Name=P2.17
+Added Pin To Net: NetName=P2.18 Pin=U9-P2.18
+Added Pin To Net: NetName=P2.18 Pin=U9-P2.18
+Added Net: Name=P2.18
+Added Pin To Net: NetName=P2.19 Pin=U9-P2.19
+Added Pin To Net: NetName=P2.19 Pin=U9-P2.19
+Added Net: Name=P2.19
+Added Pin To Net: NetName=P2.20 Pin=U9-P2.20
+Added Pin To Net: NetName=P2.20 Pin=U9-P2.20
+Added Net: Name=P2.20
+Added Pin To Net: NetName=P2.21 Pin=U9-P2.21
+Added Pin To Net: NetName=P2.21 Pin=U9-P2.21
+Added Net: Name=P2.21
+Added Pin To Net: NetName=P2.22 Pin=U9-P2.22
+Added Pin To Net: NetName=P2.22 Pin=U9-P2.22
+Added Net: Name=P2.22
+Added Pin To Net: NetName=P2.24 Pin=U9-P2.24
+Added Pin To Net: NetName=P2.24 Pin=U9-P2.24
+Added Net: Name=P2.24
+Added Pin To Net: NetName=P2.26 Pin=U9-P2.26
+Added Pin To Net: NetName=P2.26 Pin=U9-P2.26
+Added Net: Name=P2.26
+Added Pin To Net: NetName=P2.28 Pin=U9-P2.28
+Added Pin To Net: NetName=P2.28 Pin=U9-P2.28
+Added Net: Name=P2.28
+Added Pin To Net: NetName=P2.30 Pin=U9-P2.30
+Added Pin To Net: NetName=P2.30 Pin=U9-P2.30
+Added Net: Name=P2.30
+Added Pin To Net: NetName=P2.31 Pin=U9-P2.31
+Added Pin To Net: NetName=P2.31 Pin=U9-P2.31
+Added Net: Name=P2.31
+Added Pin To Net: NetName=P2.32 Pin=U9-P2.32
+Added Pin To Net: NetName=P2.32 Pin=U9-P2.32
+Added Net: Name=P2.32
+Added Pin To Net: NetName=P2.33 Pin=U9-P2.33
+Added Pin To Net: NetName=P2.33 Pin=U9-P2.33
+Added Net: Name=P2.33
+Added Pin To Net: NetName=P2.34 Pin=U9-P2.34
+Added Pin To Net: NetName=P2.34 Pin=U9-P2.34
+Added Net: Name=P2.34
+Added Pin To Net: NetName=P2.36 Pin=U9-P2.36
+Added Pin To Net: NetName=P2.36 Pin=U9-P2.36
+Added Net: Name=P2.36
+Added Pin To Net: NetName=P2.39 Pin=U9-P2.39
+Added Pin To Net: NetName=P2.39 Pin=U9-P2.39
+Added Net: Name=P2.39
+Added Pin To Net: NetName=P2.40 Pin=U9-P2.40
+Added Pin To Net: NetName=P2.40 Pin=U9-P2.40
+Added Net: Name=P2.40
+Added Pin To Net: NetName=P2.41 Pin=U9-P2.41
+Added Pin To Net: NetName=P2.41 Pin=U9-P2.41
+Added Net: Name=P2.41
+Added Pin To Net: NetName=P2.42 Pin=U9-P2.42
+Added Pin To Net: NetName=P2.42 Pin=U9-P2.42
+Added Net: Name=P2.42
+Added Pin To Net: NetName=P2.43 Pin=U9-P2.43
+Added Pin To Net: NetName=P2.43 Pin=U9-P2.43
+Added Net: Name=P2.43
+Added Pin To Net: NetName=P2.44 Pin=U9-P2.44
+Added Pin To Net: NetName=P2.44 Pin=U9-P2.44
+Added Net: Name=P2.44
+Added Pin To Net: NetName=P2.45 Pin=U9-P2.45
+Added Pin To Net: NetName=P2.45 Pin=U9-P2.45
+Added Net: Name=P2.45
+Added Pin To Net: NetName=P2.46 Pin=U9-P2.46
+Added Pin To Net: NetName=P2.46 Pin=U9-P2.46
+Added Net: Name=P2.46
+Added Pin To Net: NetName=P2.47 Pin=U9-P2.47
+Added Pin To Net: NetName=P2.47 Pin=U9-P2.47
+Added Net: Name=P2.47
+Added Member To Class: ClassName=Ganancia CH izquierdo Member=Component JP1 Jumper 2x1
+Added Member To Class: ClassName=Ganancia CH izquierdo Member=Component JP2 Jumper 2x1
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component JP3 Jumper 2x1
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component JP4 Jumper 2x1

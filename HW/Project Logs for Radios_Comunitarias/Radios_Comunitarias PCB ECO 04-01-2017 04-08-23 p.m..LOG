@@ -1,0 +1,17 @@
+Removed Pin From Net: NetName=5VDISC Pin=D1-2
+Added Component: Designator=D6(59-04)
+Added Pin To Net: NetName=5VDISC Pin=D1-1
+Added Pin To Net: NetName=+15V Pin=D1-2
+Added Pin To Net: NetName=5V Pin=D6-1
+Added Pin To Net: NetName=+15V Pin=D6-2
+Added Pin To Net: NetName=VOP_ADC- Pin=U4-4
+Added Pin To Net: NetName=VOP_ADC+ Pin=U4-11
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.3
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.3
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.4
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.4
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-4
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-11
+Change Net Name : Old Net Name=5VDISC New Net Name=5V_EXT
+Added Member To Class: ClassName=Fuentes Member=Component D6 1N5819
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U10 STM32F4Discovery

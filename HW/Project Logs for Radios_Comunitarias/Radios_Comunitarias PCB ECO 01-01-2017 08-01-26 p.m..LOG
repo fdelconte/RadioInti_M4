@@ -1,0 +1,5 @@
+Removed Member From Class: ClassName=Fuentes Member=U2
+Added Pin To Net: NetName=GROUND Pin=C2-2
+Added Pin To Net: NetName=GROUND Pin=C3-2
+Added Pin To Net: NetName=GROUND Pin=C7-2
+Added Pin To Net: NetName=GROUND Pin=C8-2

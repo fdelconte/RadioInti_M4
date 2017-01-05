@@ -1,0 +1,84 @@
+Removed Pin From Net: NetName=NetC36_2 Pin=U1-8
+Removed Pin From Net: NetName=NetR16_2 Pin=U1-9
+Removed Pin From Net: NetName=NetR13_1 Pin=U1-10
+Removed Pin From Net: NetName=NetR12_1 Pin=U1-12
+Removed Pin From Net: NetName=NetR15_2 Pin=U1-13
+Removed Pin From Net: NetName=NetJP3_2 Pin=U1-14
+Removed Pin From Net: NetName=NetC37_1 Pin=U2-5
+Removed Pin From Net: NetName=NetC35_1 Pin=U2-6
+Removed Pin From Net: NetName=NetC35_2 Pin=U2-7
+Removed Pin From Net: NetName=GROUND Pin=U2-12
+Removed Pin From Net: NetName=NetR35_2 Pin=U2-13
+Removed Pin From Net: NetName=NetC29_2 Pin=U2-14
+Removed Pin From Net: NetName=NetC26_1 Pin=U3-5
+Removed Pin From Net: NetName=NetC24_1 Pin=U3-6
+Removed Pin From Net: NetName=NetC24_2 Pin=U3-7
+Removed Pin From Net: NetName=GROUND Pin=U3-12
+Removed Pin From Net: NetName=NetR21_2 Pin=U3-13
+Removed Pin From Net: NetName=NetC18_2 Pin=U3-14
+Removed Pin From Net: NetName=NetC40_1 Pin=U4-1
+Removed Pin From Net: NetName=NetC43_1 Pin=U4-2
+Removed Pin From Net: NetName=NetC43_2 Pin=U4-3
+Removed Pin From Net: NetName=GROUND Pin=U4-5
+Removed Pin From Net: NetName=GROUND Pin=U4-6
+Removed Pin From Net: NetName=NetC75_1 Pin=U11-1
+Removed Pin From Net: NetName=NetC79_1 Pin=U11-2
+Removed Pin From Net: NetName=NetC79_2 Pin=U11-3
+Removed Pin From Net: NetName=GROUND Pin=U11-5
+Removed Pin From Net: NetName=GROUND Pin=U11-6
+Removed Pin From Net: NetName=NetC67_2 Pin=U11-12
+Removed Pin From Net: NetName=NetC67_1 Pin=U11-13
+Removed Pin From Net: NetName=NetC64_1 Pin=U11-14
+Added Component: Designator=C91(TANT)
+Added Component: Designator=C92(C_0805)
+Added Component: Designator=C93(C_0805)
+Added Component: Designator=C94(TANT)
+Added Pin To Net: NetName=VOP_ADC+ Pin=C91-1
+Added Pin To Net: NetName=GROUND Pin=C91-2
+Added Pin To Net: NetName=VOP_ADC+ Pin=C92-1
+Added Pin To Net: NetName=GROUND Pin=C92-2
+Added Pin To Net: NetName=VOP_ADC- Pin=C93-1
+Added Pin To Net: NetName=GROUND Pin=C93-2
+Added Pin To Net: NetName=GROUND Pin=C94-1
+Added Pin To Net: NetName=VOP_ADC- Pin=C94-2
+Added Pin To Net: NetName=NetJP3_2 Pin=U1-8
+Added Pin To Net: NetName=NetR15_2 Pin=U1-9
+Added Pin To Net: NetName=NetR12_1 Pin=U1-10
+Added Pin To Net: NetName=NetR13_1 Pin=U1-12
+Added Pin To Net: NetName=NetR16_2 Pin=U1-13
+Added Pin To Net: NetName=NetC36_2 Pin=U1-14
+Added Pin To Net: NetName=GROUND Pin=U2-5
+Added Pin To Net: NetName=NetR35_2 Pin=U2-6
+Added Pin To Net: NetName=NetC29_2 Pin=U2-7
+Added Pin To Net: NetName=NetC37_1 Pin=U2-12
+Added Pin To Net: NetName=NetC35_1 Pin=U2-13
+Added Pin To Net: NetName=NetC35_2 Pin=U2-14
+Added Pin To Net: NetName=GROUND Pin=U3-5
+Added Pin To Net: NetName=NetR21_2 Pin=U3-6
+Added Pin To Net: NetName=NetC18_2 Pin=U3-7
+Added Pin To Net: NetName=NetC26_1 Pin=U3-12
+Added Pin To Net: NetName=NetC24_1 Pin=U3-13
+Added Pin To Net: NetName=NetC24_2 Pin=U3-14
+Added Pin To Net: NetName=GROUND Pin=U4-2
+Added Pin To Net: NetName=GROUND Pin=U4-3
+Added Pin To Net: NetName=VOP_ADC- Pin=U4-4
+Added Pin To Net: NetName=NetC43_2 Pin=U4-5
+Added Pin To Net: NetName=NetC43_1 Pin=U4-6
+Added Pin To Net: NetName=NetC40_1 Pin=U4-7
+Added Pin To Net: NetName=VOP_ADC+ Pin=U4-11
+Added Pin To Net: NetName=GROUND Pin=U11-2
+Added Pin To Net: NetName=GROUND Pin=U11-3
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-4
+Added Pin To Net: NetName=NetC67_2 Pin=U11-5
+Added Pin To Net: NetName=NetC67_1 Pin=U11-6
+Added Pin To Net: NetName=NetC64_1 Pin=U11-7
+Added Pin To Net: NetName=VOP_ADC- Pin=U11-11
+Added Pin To Net: NetName=NetC79_2 Pin=U11-12
+Added Pin To Net: NetName=NetC79_1 Pin=U11-13
+Added Pin To Net: NetName=NetC75_1 Pin=U11-14
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component C91 10uF 25V T
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component C92 0.1uF 25V X7R
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component C93 0.1uF 25V X7R
+Added Member To Class: ClassName=Ganancia CH derecho Member=Component C94 10uF 25V T
+Added Room: Name=Ganancia CH derecho
+Added Room: Name=Ganancia CH izquierdo

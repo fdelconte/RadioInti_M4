@@ -5,7 +5,7 @@
   *                      and de-Initialization codes.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2016 STMicroelectronics
+  * COPYRIGHT(c) 2017 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -33,6 +33,8 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+
+extern DMA_HandleTypeDef hdma_spi3_tx;
 
 extern void Error_Handler(void);
 /* USER CODE BEGIN 0 */
@@ -87,7 +89,6 @@ void HAL_I2S_MspInit(I2S_HandleTypeDef* hi2s)
     PA4     ------> I2S3_WS
     PC7     ------> I2S3_MCK
     PC10     ------> I2S3_CK
-    PC11     ------> I2S3_ext_SD
     PC12     ------> I2S3_SD 
     */
     GPIO_InitStruct.Pin = GPIO_PIN_4;
@@ -97,19 +98,38 @@ void HAL_I2S_MspInit(I2S_HandleTypeDef* hi2s)
     GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_10|GPIO_PIN_12;
+    GPIO_InitStruct.Pin = GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-    GPIO_InitStruct.Alternate = GPIO_AF5_I2S3ext;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    /* Peripheral DMA init*/
+  
+    hdma_spi3_tx.Instance = DMA1_Stream5;
+    hdma_spi3_tx.Init.Channel = DMA_CHANNEL_0;
+    hdma_spi3_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_spi3_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_spi3_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_spi3_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_spi3_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_spi3_tx.Init.Mode = DMA_NORMAL;
+    hdma_spi3_tx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_spi3_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_spi3_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(hi2s,hdmatx,hdma_spi3_tx);
 
     /* Peripheral interrupt init */
     HAL_NVIC_SetPriority(SPI3_IRQn, 0, 0);
@@ -136,12 +156,14 @@ void HAL_I2S_MspDeInit(I2S_HandleTypeDef* hi2s)
     PA4     ------> I2S3_WS
     PC7     ------> I2S3_MCK
     PC10     ------> I2S3_CK
-    PC11     ------> I2S3_ext_SD
     PC12     ------> I2S3_SD 
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_4);
 
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_7|GPIO_PIN_10|GPIO_PIN_12);
+
+    /* Peripheral DMA DeInit*/
+    HAL_DMA_DeInit(hi2s->hdmatx);
 
     /* Peripheral interrupt DeInit*/
     HAL_NVIC_DisableIRQ(SPI3_IRQn);

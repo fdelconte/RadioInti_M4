@@ -4,7 +4,7 @@
   * Description        : Main program body
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2016 STMicroelectronics
+  * COPYRIGHT(c) 2017 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -40,9 +40,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2S_HandleTypeDef hi2s3;
+DMA_HandleTypeDef hdma_spi3_tx;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+
 
 /* USER CODE END PV */
 
@@ -50,6 +52,7 @@ I2S_HandleTypeDef hi2s3;
 void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_I2S3_Init(void);
 
 /* USER CODE BEGIN PFP */
@@ -59,14 +62,21 @@ static void MX_I2S3_Init(void);
 
 /* USER CODE BEGIN 0 */
 #define BUFFER_LENGTH 100
+#define buffer_dma		4
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////// VARIABLES //////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	uint32_t led_count = 0;
+	uint16_t buffer_tx[] = {0xFFFF, 0x8001, 0x7FFE, 0x5A5A};
+	uint16_t buffer_tx_0xFFFF[] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
+
 	
   /* USER CODE END 1 */
 
@@ -80,9 +90,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2S3_Init();
 
   /* USER CODE BEGIN 2 */
+
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Pruebas arm.math
@@ -99,82 +111,22 @@ int main(void)
 //	float32_t pSrcB[BUFFER_LENGTH]={2};
 //	float32_t pDst[BUFFER_LENGTH];
 	
+
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Pruebas I2S
+	// Pruebas I2S_3 // TX mode // DMA // 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Pruebas I2S3_TX
-	//							Master mode / 32 bits en 32 bits / MCK enable
-	//							fs = 96 KHz
-	//									Pines MCK / CK / SD en velocidad MEDIUM
-	//									I2S clock en 124MHz
-	//									OK
-	//							fs = 192 KHz
-	//									Pines CK / SD en velocidad MEDIUM, MCK en velocidad VERY HIGH
-	//									I2S clock en 192MHz
-	//									MCK tiene una amplitud de 1 V
-	////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-//	// Para que el while(1) tenga algo
-//	uint32_t i = 0;
-//			
-//	// Datos a enviar
-//	uint16_t pData[] = {0xFFFF, 0x5A5A, 0x0000, 0x8001};
-//	// Cantidad de datos a enviar
-//	uint16_t Size2 = 2;
-
-//	// Comienza la transmición que en IRQ sera relanzada
-//	if (HAL_I2S_Transmit_IT(&hi2s3, (uint16_t *) pData, Size2) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Pruebas I2S3_ex_TX
-	//							Master mode / 32 bits en 32 bits / MCK enable
-	//							fs = 96 KHz
-	//									Pines MCK / CK / SD en velocidad MEDIUM
-	//									I2S clock en 124MHz
-	//									OK
-	//							fs = 192 KHz
-	//									Pines CK / SD en velocidad MEDIUM, MCK en velocidad VERY HIGH
-	//									I2S clock en 192MHz
-	//									MCK tiene una amplitud de 1 V
-	////////////////////////////////////////////////////////////////////////////////////////////////////	
-
-	// Para que el while(1) tenga algo
 	uint32_t i = 0;
 
-	uint16_t pTxData[] = {0xFFFF, 0x5A5A, 0x0000, 0x8001, 0xF00F, 0x0FF0};
-	uint16_t pRxData[10];
-	uint16_t Size = 3;
-	
-	//HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_IT(I2S_HandleTypeDef *hi2s, uint16_t *pTxData, uint16_t *pRxData, uint16_t Size)
-
-	// Pruebas con I2S mediante INTERRUPCIONES
-	if (HAL_I2SEx_TransmitReceive_IT(&hi2s3, pTxData, pRxData, Size) != HAL_OK)
+	if( HAL_I2S_Transmit_DMA(&hi2s3, buffer_tx, 4) != HAL_OK )
 	{
-		Error_Handler();
+			Error_Handler();
 	}
 
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			// Pruebas I2S_ex_2
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			// Funciones
-			
-			//HAL_I2S_TransmitReceive_IT
-			
-			//HAL_I2S_TxHalfCpltCallback
-			//HAL_I2S_TxCpltCallback
-			//HAL_I2S_RxHalfCpltCallback
-			//HAL_I2S_RxCpltCallback
-			
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			
-			
-			
-			
+	
+	
+						
 	
   /* USER CODE END 2 */
 
@@ -185,56 +137,60 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////// LED TODO OK ////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (led_count == 12000000)
+		{
+			HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_RESET);
+			led_count++;
+		}
+		else if (led_count == 24000000)
+		{
+			HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_RESET);
+			led_count++;
+		}
+		else if (led_count == 36000000)
+		{
+			HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_RESET);			
+			led_count++;
+		}
+		else if (led_count == 48000000)
+		{
+			HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_RESET);			
+			led_count = 0;
+		}
+		else
+			led_count++;
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		// Pruebas realizadas con el periférico I2S hechas por AGUSTINA DA. Continuo la semana que viene.
-//		if (HAL_I2SEx_TransmitReceive(&hi2s2, pTxData, &pRxData, Size, Timeout) != HAL_OK)
-//		{
-//			Error_Handler();
-//		}
 		
-			i++;
 		
-			if ( i == 100000)
+		
+		
+		if( hdma_spi3_tx.State == HAL_DMA_STATE_READY )
+		{
+			if( i == 0 )
+			{
+				if( HAL_I2S_Transmit_DMA(&hi2s3, buffer_tx, 4) != HAL_OK )
+					Error_Handler();
+				i = 1;
+			}
+			else if ( i == 1 )
+			{
+				if( HAL_I2S_Transmit_DMA(&hi2s3, buffer_tx_0xFFFF, 4) != HAL_OK )
+					Error_Handler();
 				i = 0;
-
+			}
+		}
 			
-//			if (hi2s3.TxXferCount == 0U && hi2s3.RxXferCount == 0U && hi2s3.Lock == HAL_UNLOCKED && hi2s3.State == HAL_I2S_STATE_READY)
-//			{			
-////				HAL_NVIC_DisableIRQ(SPI2_IRQn);
-
-//				if (HAL_I2SEx_TransmitReceive_IT(&hi2s3, (uint16_t *) pTxData, (uint16_t *) pRxData, Size) != HAL_OK)
-//				{
-//					Error_Handler();
-//				}
-////				HAL_NVIC_EnableIRQ(SPI2_IRQn);
-//			}
-
-			
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
-////////	// Pruebas I2S_ex_2
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
-////////	if (hi2s2.RxXferCount == 0U && hi2s2.Lock == HAL_UNLOCKED && hi2s2.State == HAL_I2S_STATE_READY)
-////////	{			
-////////		if (HAL_I2S_Transmit_IT(&hi2s2, (uint16_t *) pData, Size2) != HAL_OK)
-////////		{
-////////				Size2 = 4;
-////////		}
-////////	}
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
-////////	// Pruebas I2S_TX_3
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
-////////		if (HAL_I2SEx_TransmitReceive_IT(&hi2s3, (uint16_t *) pTxData, (uint16_t *) pRxData, Size) != HAL_OK)
-////////  {
-////////		Size = 4;
-////////  }
-////////	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-			
-			
 		
 //		//*********************************************************
 //		arm_mult_f32(pSrcA, pSrcB, pDst, blockSize );	
@@ -334,14 +290,29 @@ static void MX_I2S3_Init(void)
   hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s3.Init.DataFormat = I2S_DATAFORMAT_32B;
   hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_96K;
+  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_48K;
   hi2s3.Init.CPOL = I2S_CPOL_LOW;
   hi2s3.Init.ClockSource = I2S_CLOCK_PLL;
-  hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
+  hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
   if (HAL_I2S_Init(&hi2s3) != HAL_OK)
   {
     Error_Handler();
   }
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
 }
 
@@ -383,10 +354,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin|Audio_RST_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD5_Pin|Audio_RST_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, LD3_Pin|LD6_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -509,6 +480,9 @@ void Error_Handler(void)
   /* User can add his own implementation to report the HAL error return state */
   while(1) 
   {
+		if(i == 0)
+			HAL_GPIO_WritePin(GPIOD, LD3_Pin|LD4_Pin|LD5_Pin|LD6_Pin, GPIO_PIN_SET);
+		
 		i++;
   }
   /* USER CODE END Error_Handler */ 

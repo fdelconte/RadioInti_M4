@@ -44,9 +44,8 @@ volatile uint16_t Size = 4;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_spi2_rx;
-extern DMA_HandleTypeDef hdma_spi3_tx;
-extern I2S_HandleTypeDef hi2s2;
+extern DMA_HandleTypeDef hdma_spi2_tx;
+extern DMA_HandleTypeDef hdma_spi3_rx;
 extern I2S_HandleTypeDef hi2s3;
 
 /******************************************************************************/
@@ -192,63 +191,31 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-* @brief This function handles DMA1 stream3 global interrupt.
+* @brief This function handles DMA1 stream0 global interrupt.
 */
-void DMA1_Stream3_IRQHandler(void)
+void DMA1_Stream0_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Stream0_IRQn 0 */
 
-  /* USER CODE END DMA1_Stream3_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi2_rx);
-  /* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
+  /* USER CODE END DMA1_Stream0_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_spi3_rx);
+  /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
 
-  /* USER CODE END DMA1_Stream3_IRQn 1 */
+  /* USER CODE END DMA1_Stream0_IRQn 1 */
 }
 
 /**
-* @brief This function handles DMA1 stream5 global interrupt.
+* @brief This function handles DMA1 stream4 global interrupt.
 */
-void DMA1_Stream5_IRQHandler(void)
+void DMA1_Stream4_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
-//	static uint32_t i = 0;
-	
-  /* USER CODE END DMA1_Stream5_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi3_tx);
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
+  /* USER CODE BEGIN DMA1_Stream4_IRQn 0 */
 
-//	cantidad_transmisiones++;
-//	
-//	if(cantidad_transmisiones == 4)
-//	{
-//		if( HAL_I2S_DMAStop(&hi2s3) != HAL_OK )
-//			i = 2;
+  /* USER CODE END DMA1_Stream4_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_spi2_tx);
+  /* USER CODE BEGIN DMA1_Stream4_IRQn 1 */
 
-//		if( HAL_I2S_Transmit_DMA(&hi2s3, buffer_tx, Size) != HAL_OK )
-//			i = 3;
-
-//		cantidad_transmisiones = 0;
-//	}
-//	if( hdma_spi3_tx.State == HAL_DMA_STATE_READY )
-//	{
-//		if( HAL_I2S_Transmit_DMA(&hi2s3, buffer_tx, Size) != HAL_OK )
-//			i = 3;
-//	}
-  /* USER CODE END DMA1_Stream5_IRQn 1 */
-}
-
-/**
-* @brief This function handles SPI2 global interrupt.
-*/
-void SPI2_IRQHandler(void)
-{
-  /* USER CODE BEGIN SPI2_IRQn 0 */
-
-  /* USER CODE END SPI2_IRQn 0 */
-  HAL_I2S_IRQHandler(&hi2s2);
-  /* USER CODE BEGIN SPI2_IRQn 1 */
-
-  /* USER CODE END SPI2_IRQn 1 */
+  /* USER CODE END DMA1_Stream4_IRQn 1 */
 }
 
 /**

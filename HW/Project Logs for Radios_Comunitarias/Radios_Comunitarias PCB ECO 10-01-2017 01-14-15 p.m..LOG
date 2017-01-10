@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=I2S3_EXT_SD Pin=U9-14
+Added Pin To Net: NetName=I2S3_SD Pin=U9-14
+Change Net Name : Old Net Name=CKS0 New Net Name=CDTI
+Change Net Name : Old Net Name=CKS1 New Net Name=CCLK
+Change Net Name : Old Net Name=DIF New Net Name=CSN

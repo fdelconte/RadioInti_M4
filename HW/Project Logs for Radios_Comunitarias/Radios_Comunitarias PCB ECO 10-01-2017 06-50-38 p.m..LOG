@@ -1,0 +1,20 @@
+Removed Pin From Net: NetName=I2S_SD Pin=U9-13
+Removed Pin From Net: NetName=I2S3_SD Pin=U9-14
+Removed Pin From Net: NetName=PDN Pin=U10-P2.23
+Removed Pin From Net: NetName=PDN Pin=U10-P2.23
+Removed Pin From Net: NetName=CDTI Pin=U10-P2.29
+Removed Pin From Net: NetName=CDTI Pin=U10-P2.29
+Added Pin To Net: NetName=I2S3_SD Pin=U9-13
+Added Pin To Net: NetName=I2S_SD Pin=U9-14
+Added Pin To Net: NetName=PDN Pin=U10-P2.19
+Added Pin To Net: NetName=PDN Pin=U10-P2.19
+Added Pin To Net: NetName=CDTI Pin=U10-P2.31
+Added Pin To Net: NetName=CDTI Pin=U10-P2.31
+Added Pin To Net: NetName=P2.23 Pin=U10-P2.23
+Added Pin To Net: NetName=P2.23 Pin=U10-P2.23
+Added Net: Name=P2.23
+Added Pin To Net: NetName=P2.29 Pin=U10-P2.29
+Added Pin To Net: NetName=P2.29 Pin=U10-P2.29
+Added Net: Name=P2.29
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component  EXPANSION
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U9 AK4621

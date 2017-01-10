@@ -1,0 +1,30 @@
+Added Component: Designator=U9(AK4621)
+Added Pin To Net: NetName=NetC87_1 Pin=U9-1
+Added Pin To Net: NetName=AINR_P Pin=U9-2
+Added Pin To Net: NetName=AINR_N Pin=U9-3
+Added Pin To Net: NetName=AINL_P Pin=U9-4
+Added Pin To Net: NetName=AINL_N Pin=U9-5
+Added Pin To Net: NetName=5V Pin=U9-6
+Added Pin To Net: NetName=AGND Pin=U9-7
+Added Pin To Net: NetName=5V Pin=U9-8
+Added Pin To Net: NetName=DGND Pin=U9-9
+Added Pin To Net: NetName=I2S3_MCK Pin=U9-10
+Added Pin To Net: NetName=I2S3_WS Pin=U9-11
+Added Pin To Net: NetName=I2S3_CK Pin=U9-12
+Added Pin To Net: NetName=I2S_SD Pin=U9-13
+Added Pin To Net: NetName=I2S3_SD Pin=U9-14
+Added Pin To Net: NetName=CDTI Pin=U9-17
+Added Pin To Net: NetName=CCLK Pin=U9-18
+Added Pin To Net: NetName=CSN Pin=U9-19
+Added Pin To Net: NetName=DGND Pin=U9-20
+Added Pin To Net: NetName=PDN Pin=U9-21
+Added Pin To Net: NetName=3V3 Pin=U9-22
+Added Pin To Net: NetName=DGND Pin=U9-23
+Added Pin To Net: NetName=3V3 Pin=U9-24
+Added Pin To Net: NetName=3V3 Pin=U9-25
+Added Pin To Net: NetName=AGND Pin=U9-26
+Added Pin To Net: NetName=NetC41_1 Pin=U9-27
+Added Pin To Net: NetName=NetC53_1 Pin=U9-28
+Added Pin To Net: NetName=NetC65_1 Pin=U9-29
+Added Pin To Net: NetName=NetC77_1 Pin=U9-30
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U9 AK4621

@@ -1,0 +1,57 @@
+Removed Pin From Net: NetName=5V Pin=C6-1
+Removed Pin From Net: NetName=5V Pin=C8-1
+Removed Pin From Net: NetName=3V3 Pin=C9-1
+Removed Pin From Net: NetName=+15V Pin=D3-2
+Removed Pin From Net: NetName=-15V Pin=D5-1
+Removed Pin From Net: NetName=5V Pin=D6-1
+Removed Pin From Net: NetName=+15V Pin=P1-2
+Removed Pin From Net: NetName=-15V Pin=P2-2
+Removed Pin From Net: NetName=5V Pin=U7-3
+Removed Pin From Net: NetName=3V3 Pin=U8-2
+Removed Pin From Net: NetName=5V Pin=U8-3
+Removed Pin From Net: NetName=5VDISC Pin=U10-P2.3
+Removed Pin From Net: NetName=5VDISC Pin=U10-P2.3
+Removed Pin From Net: NetName=5VDISC Pin=U10-P2.4
+Removed Pin From Net: NetName=5VDISC Pin=U10-P2.4
+Added Component: Designator=JP14(Conn_2_1)
+Added Component: Designator=JP15(Conn_2_1)
+Added Component: Designator=JP16(Conn_2_1)
+Added Component: Designator=JP17(Conn_2_1)
+Added Component: Designator=JP18(Conn_2_1)
+Added Pin To Net: NetName=5V Pin=JP14-2
+Added Pin To Net: NetName=3V3 Pin=JP15-2
+Added Pin To Net: NetName=5VDISC Pin=JP16-1
+Added Pin To Net: NetName=+15V Pin=JP17-2
+Added Pin To Net: NetName=-15V Pin=JP18-2
+Change Net Name : Old Net Name=5V New Net Name=AVDD
+Change Net Name : Old Net Name=5VDISC New Net Name=NetC3_1
+Added Pin To Net: NetName=5VDISC Pin=JP16-2
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.3
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.3
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.4
+Added Pin To Net: NetName=5VDISC Pin=U10-P2.4
+Added Net: Name=5VDISC
+Added Pin To Net: NetName=5V Pin=C6-1
+Added Pin To Net: NetName=5V Pin=C8-1
+Added Pin To Net: NetName=5V Pin=D6-1
+Added Pin To Net: NetName=5V Pin=JP14-1
+Added Pin To Net: NetName=5V Pin=U7-3
+Added Pin To Net: NetName=5V Pin=U8-3
+Added Net: Name=5V
+Added Pin To Net: NetName=NetC9_1 Pin=C9-1
+Added Pin To Net: NetName=NetC9_1 Pin=JP15-1
+Added Pin To Net: NetName=NetC9_1 Pin=U8-2
+Added Net: Name=NetC9_1
+Added Pin To Net: NetName=NetD3_2 Pin=D3-2
+Added Pin To Net: NetName=NetD3_2 Pin=JP17-1
+Added Pin To Net: NetName=NetD3_2 Pin=P1-2
+Added Net: Name=NetD3_2
+Added Pin To Net: NetName=NetD5_1 Pin=D5-1
+Added Pin To Net: NetName=NetD5_1 Pin=JP18-1
+Added Pin To Net: NetName=NetD5_1 Pin=P2-2
+Added Net: Name=NetD5_1
+Added Member To Class: ClassName=Fuentes Member=Component JP14 Jumper 2x1
+Added Member To Class: ClassName=Fuentes Member=Component JP15 Jumper 2x1
+Added Member To Class: ClassName=Fuentes Member=Component JP16 Jumper 2x1
+Added Member To Class: ClassName=Fuentes Member=Component JP17 Jumper 2x1
+Added Member To Class: ClassName=Fuentes Member=Component JP18 Jumper 2x1

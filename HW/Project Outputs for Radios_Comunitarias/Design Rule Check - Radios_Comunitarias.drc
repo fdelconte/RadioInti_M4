@@ -1,9 +1,9 @@
 Protel Design System Design Rule Check
 PCB File : D:\Program Files\INTI\Transmitter\RadioInti_M4\HW\Radios_Comunitarias.PcbDoc
 Date     : 10/01/2017
-Time     : 06:03:03 p.m.
+Time     : 08:55:28 p.m.
 
-Processing Rule : Clearance Constraint (Gap=15mil) (InPolygon),(All)
+Processing Rule : Clearance Constraint (Gap=20mil) (InPolygon),(All)
 Rule Violations :0
 
 Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
@@ -26,11 +26,13 @@ Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
 Rule Violations :0
 
 Processing Rule : Un-Routed Net Constraint ( (All) )
-Rule Violations :0
+   Violation between Un-Routed Net Constraint: Net I2S_SD Between Pad JP5-2 (3188.976,954.724mil) And Track on layer Top Layer (3188.976,1082.677mil)
+   Violation between Un-Routed Net Constraint: Net I2S3_EXT_SD Between Pad JP5-3 (3288.976,954.724mil) And Track on layer Bottom Layer (3336.614,826.772mil)
+Rule Violations :2
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
 Rule Violations :0
 
 
-Violations Detected : 4
+Violations Detected : 6
 Time Elapsed        : 00:00:02

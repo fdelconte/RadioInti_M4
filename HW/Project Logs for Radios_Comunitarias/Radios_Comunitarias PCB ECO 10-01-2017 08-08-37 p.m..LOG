@@ -1,0 +1,65 @@
+Removed Pin From Net: NetName=AINL_N Pin=C22-1
+Removed Pin From Net: NetName=AINL_P Pin=C22-2
+Removed Pin From Net: NetName=AINR_N Pin=C33-1
+Removed Pin From Net: NetName=AINR_P Pin=C33-2
+Removed Pin From Net: NetName=AINL_P Pin=R25-1
+Removed Pin From Net: NetName=AINL_N Pin=R31-1
+Removed Pin From Net: NetName=AINR_P Pin=R39-1
+Removed Pin From Net: NetName=AINR_N Pin=R45-1
+Removed Pin From Net: NetName=NetC41_1 Pin=U9-27
+Removed Pin From Net: NetName=NetC53_1 Pin=U9-28
+Removed Pin From Net: NetName=NetC65_1 Pin=U9-29
+Removed Pin From Net: NetName=NetC77_1 Pin=U9-30
+Added Component: Designator=JP6(Conn_2_1)
+Added Component: Designator=JP7(Conn_2_1)
+Added Component: Designator=JP8(Conn_2_1)
+Added Component: Designator=JP9(Conn_2_1)
+Added Component: Designator=JP10(Conn_2_1)
+Added Component: Designator=JP11(Conn_2_1)
+Added Component: Designator=JP12(Conn_2_1)
+Added Component: Designator=JP13(Conn_2_1)
+Added Pin To Net: NetName=AINR_P Pin=JP6-2
+Added Pin To Net: NetName=AINR_N Pin=JP7-1
+Added Pin To Net: NetName=AINL_P Pin=JP8-2
+Added Pin To Net: NetName=AINL_N Pin=JP9-1
+Added Pin To Net: NetName=NetC41_1 Pin=JP10-2
+Added Pin To Net: NetName=NetC53_1 Pin=JP11-2
+Added Pin To Net: NetName=NetC65_1 Pin=JP12-2
+Added Pin To Net: NetName=NetC77_1 Pin=JP13-2
+Added Pin To Net: NetName=NetC22_1 Pin=C22-1
+Added Pin To Net: NetName=NetC22_1 Pin=JP9-2
+Added Pin To Net: NetName=NetC22_1 Pin=R31-1
+Added Net: Name=NetC22_1
+Added Pin To Net: NetName=NetC22_2 Pin=C22-2
+Added Pin To Net: NetName=NetC22_2 Pin=JP8-1
+Added Pin To Net: NetName=NetC22_2 Pin=R25-1
+Added Net: Name=NetC22_2
+Added Pin To Net: NetName=NetC33_1 Pin=C33-1
+Added Pin To Net: NetName=NetC33_1 Pin=JP7-2
+Added Pin To Net: NetName=NetC33_1 Pin=R45-1
+Added Net: Name=NetC33_1
+Added Pin To Net: NetName=NetC33_2 Pin=C33-2
+Added Pin To Net: NetName=NetC33_2 Pin=JP6-1
+Added Pin To Net: NetName=NetC33_2 Pin=R39-1
+Added Net: Name=NetC33_2
+Added Pin To Net: NetName=NetJP10_1 Pin=JP10-1
+Added Pin To Net: NetName=NetJP10_1 Pin=U9-27
+Added Net: Name=NetJP10_1
+Added Pin To Net: NetName=NetJP11_1 Pin=JP11-1
+Added Pin To Net: NetName=NetJP11_1 Pin=U9-28
+Added Net: Name=NetJP11_1
+Added Pin To Net: NetName=NetJP12_1 Pin=JP12-1
+Added Pin To Net: NetName=NetJP12_1 Pin=U9-29
+Added Net: Name=NetJP12_1
+Added Pin To Net: NetName=NetJP13_1 Pin=JP13-1
+Added Pin To Net: NetName=NetJP13_1 Pin=U9-30
+Added Net: Name=NetJP13_1
+Added Member To Class: ClassName=Entrada canal derecho Member=Component JP6 Jumper 2x1
+Added Member To Class: ClassName=Entrada canal derecho Member=Component JP7 Jumper 2x1
+Added Member To Class: ClassName=Entrada canal izquierdo Member=Component JP8 Jumper 2x1
+Added Member To Class: ClassName=Entrada canal izquierdo Member=Component JP9 Jumper 2x1
+Added Member To Class: ClassName=Salida canal izquierdo Member=Component JP10 Jumper 2x1
+Added Member To Class: ClassName=Salida canal izquierdo Member=Component JP11 Jumper 2x1
+Added Member To Class: ClassName=Salida canal derecho Member=Component JP12 Jumper 2x1
+Added Member To Class: ClassName=Salida canal derecho Member=Component JP13 Jumper 2x1
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U10 STM32F4Discovery

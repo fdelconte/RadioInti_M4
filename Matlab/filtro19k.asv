@@ -1,0 +1,56 @@
+%======================================================================
+% Generador de coeficientes en hexa
+%======================================================================
+%%
+
+% Frecuencia de muestreo
+fs = 48000;
+
+% Vector de tiempo para la senial de prueba
+t = [0:0.1:100];
+
+% Grafico
+figure(1);
+
+% subplot(211);
+% plot(Num_fir_46);
+
+
+
+x = 0.5*( sin(2*pi*1000/fs*t) + sin(2*pi*10000/fs*t) );
+subplot(311);
+plot(x)
+
+subplot(312);
+plot(abs(fft(x)));
+
+subplot(313);
+plot(abs(fft(filter(x, Num_fir_46))));
+
+% y = filter(Num,1,x);
+% % % test = [2,4,1,-2,-2,1,0,1,3,-3,2,-2,1,-6,-4,1,-1,-4,0,2];
+% % % salida = filter(Num,1,test);
+% % % salida = fi(salida);
+% % % 
+% % % figure(1);
+% % % subplot(3,1,1);
+% % % plot(abs(fft(x)));
+% % % subplot(3,1,2);
+% % % plot(abs(fft(Num)));
+% % % subplot(3,1,3);
+% % % plot(abs(fft(y)));
+% % % 
+
+% Abrimos el archivo
+fileID = fopen('fir19k_46coef.txt','w');
+
+% Escribimos
+for i=1:1:47
+    q15 = fi(Num_fir_46(i),1,16,15);
+     
+    fprintf(fileID, '%s', q15.hex);
+    fprintf(fileID, ',\n');
+end;
+
+% Cerramos el archivo
+fclose(fileID);

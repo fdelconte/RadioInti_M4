@@ -36,17 +36,31 @@
 #include "stm32f4xx_it.h"
 
 /* USER CODE BEGIN 0 */
+#define LOW		0
+#define HIGH	1
 
 uint16_t buffer_tx[] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
 volatile uint8_t cantidad_transmisiones = 0;
 volatile uint16_t Size = 4;
 
+extern volatile uint8_t bit_counter;
+volatile uint8_t bit_toggle = 0;
+
+
+
+extern uint32_t buffer_rx_A[4];
+extern uint32_t buffer_tx_A[4];
+
+
+
+
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_spi2_tx;
-extern DMA_HandleTypeDef hdma_spi3_rx;
+extern DMA_HandleTypeDef hdma_spi3_tx;
+extern DMA_HandleTypeDef hdma_i2s3_ext_rx;
 extern I2S_HandleTypeDef hi2s3;
+extern TIM_HandleTypeDef htim6;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -198,24 +212,26 @@ void DMA1_Stream0_IRQHandler(void)
   /* USER CODE BEGIN DMA1_Stream0_IRQn 0 */
 
   /* USER CODE END DMA1_Stream0_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi3_rx);
+  HAL_DMA_IRQHandler(&hdma_i2s3_ext_rx);
   /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
 
+	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
   /* USER CODE END DMA1_Stream0_IRQn 1 */
 }
 
 /**
-* @brief This function handles DMA1 stream4 global interrupt.
+* @brief This function handles DMA1 stream5 global interrupt.
 */
-void DMA1_Stream4_IRQHandler(void)
+void DMA1_Stream5_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Stream4_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
 
-  /* USER CODE END DMA1_Stream4_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi2_tx);
-  /* USER CODE BEGIN DMA1_Stream4_IRQn 1 */
+  /* USER CODE END DMA1_Stream5_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_spi3_tx);
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
+	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
 
-  /* USER CODE END DMA1_Stream4_IRQn 1 */
+  /* USER CODE END DMA1_Stream5_IRQn 1 */
 }
 
 /**
@@ -234,6 +250,32 @@ void SPI3_IRQHandler(void)
 	
 			
   /* USER CODE END SPI3_IRQn 1 */
+}
+
+/**
+* @brief This function handles TIM6 global interrupt, DAC1 and DAC2 underrun error interrupts.
+*/
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+	
+	if ( bit_toggle == LOW )
+	{	
+		HAL_GPIO_WritePin(CCLK_GPIO_Port, CCLK_Pin, GPIO_PIN_SET);					// Subo la linea de CCLK
+		bit_toggle = HIGH;
+	}
+	else
+	{
+		HAL_GPIO_WritePin(CCLK_GPIO_Port, CCLK_Pin, GPIO_PIN_RESET);				// Bajo la linea de CCLK
+		bit_toggle = LOW;
+		bit_counter++;
+	}
+		
+  /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

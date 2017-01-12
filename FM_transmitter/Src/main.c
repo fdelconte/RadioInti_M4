@@ -36,13 +36,14 @@
 /* USER CODE BEGIN Includes */
 #define ARM_MATH_CM4
 #include "arm_math.h"
+
+#include "codec.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-I2S_HandleTypeDef hi2s2;
 I2S_HandleTypeDef hi2s3;
-DMA_HandleTypeDef hdma_spi2_tx;
-DMA_HandleTypeDef hdma_spi3_rx;
+DMA_HandleTypeDef hdma_spi3_tx;
+DMA_HandleTypeDef hdma_i2s3_ext_rx;
 
 TIM_HandleTypeDef htim6;
 
@@ -58,7 +59,6 @@ void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2S3_Init(void);
-static void MX_I2S2_Init(void);
 static void MX_TIM6_Init(void);
 
 /* USER CODE BEGIN PFP */
@@ -67,8 +67,16 @@ static void MX_TIM6_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+
+uint32_t buffer_tx_A[4] = {0x00000011, 0x00002233, 0x00004455, 0x6677};
+uint32_t buffer_tx_B[4] = {0x8899, 0xAABB, 0xCCDD, 0xEEFF};
+
+uint32_t buffer_rx_A[4] = {0};
+uint32_t buffer_rx_B[4] = {0};
+
 #define BUFFER_LENGTH 100
 #define buffer_dma		4
+
 /* USER CODE END 0 */
 
 int main(void)
@@ -79,15 +87,9 @@ int main(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////// VARIABLES //////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	uint32_t led_count = 0;
-	uint16_t buffer_tx_A1[] = {0xFFFF, 0x8001, 0x7FFE, 0x5A5A};
-	uint16_t buffer_tx_B1[] = {0x5A5A, 0x7FFE, 0x8001, 0xFFFF};
-	
-	uint16_t buffer_tx_A[] = {0x0011, 0x2233, 0x4455, 0x6677};
-	uint16_t buffer_tx_B[] = {0x8899, 0xAABB, 0xCCDD, 0xEEFF};
-	
-	uint16_t buffer_rx_A[4] = {0};
-	uint16_t buffer_rx_B[4] = {0};
+//	uint32_t led_count = 0;
+//	uint16_t buffer_tx_A1[] = {0xFFFF, 0x8001, 0x7FFE, 0x5A5A};
+//	uint16_t buffer_tx_B1[] = {0x5A5A, 0x7FFE, 0x8001, 0xFFFF};
 
 	
   /* USER CODE END 1 */
@@ -104,7 +106,6 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2S3_Init();
-  MX_I2S2_Init();
   MX_TIM6_Init();
 
   /* USER CODE BEGIN 2 */
@@ -131,35 +132,28 @@ int main(void)
 	// Pruebas I2S_3 // TX mode // DMA // 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	uint32_t i = 0;
-	uint32_t j = 0;
 
-
-
-
-
-	if( HAL_I2S_Transmit_DMA(&hi2s2, buffer_tx_A, 4) != HAL_OK )
-	{
-			Error_Handler();
-	}
-
-	
-	
-	if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_A, 4) != HAL_OK )
+	// Comienza TX con DMA
+	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_rx_A, 4) != HAL_OK )
 	{
 			Error_Handler();
 	}
 	
-
-
-	
-	
-	
-//	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, buffer_tx_A, buffer_rx_B, 4) != HAL_OK )
+//	// Comienza RX con DMA
+//	if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_A, 4) != HAL_OK )
 //	{
 //			Error_Handler();
 //	}
 	
+
+
+	
+
+	
+	uint8_t codec_address = 0xFF;
+	uint8_t codec_data = 0x00;
+	
+	uint32_t counter = 0;
 	
 	
 	
@@ -173,100 +167,18 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+		
+		led_secuencia();
+		
+		//dma_tx_rx();
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////// LED TODO OK ////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (led_count == 6000000)
-		{
-			HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_RESET);
-			led_count++;
-		}
-		else if (led_count == 12000000)
-		{
-			HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_RESET);
-			led_count++;
-		}
-		else if (led_count == 18000000)
-		{
-			HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_RESET);			
-			led_count++;
-		}
-		else if (led_count == 24000000)
-		{
-			HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_RESET);			
-			led_count = 0;
-		}
-		else
-			led_count++;
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-//		if( hdma_spi3_tx.State == HAL_DMA_STATE_READY && hi2s3.State == HAL_I2S_STATE_READY )
+//		counter++;
+//		
+//		if(counter == 100000)
 //		{
-//			if( j == 0 )
-//			{
-//				if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, buffer_tx_A1, buffer_rx_B, 4) != HAL_OK )
-//					Error_Handler();
-//				j = 1;
-//			}
-//			else if ( j == 1 )
-//			{
-//				if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, buffer_tx_B1, buffer_rx_B, 4) != HAL_OK )
-//					Error_Handler();
-//				j = 0;
-//			}
+//			codec_send_data( codec_address, codec_data );
+//			counter = 0;
 //		}
-		
-
-
-
-
-		if( hdma_spi2_tx.State == HAL_DMA_STATE_READY )
-		{
-			if( i == 0 )
-			{
-				if( HAL_I2S_Transmit_DMA(&hi2s2, buffer_tx_A, 4) != HAL_OK )
-					Error_Handler();
-				i = 1;
-			}
-			else if ( i == 1 )
-			{
-				if( HAL_I2S_Transmit_DMA(&hi2s2, buffer_tx_B, 4) != HAL_OK )
-					Error_Handler();
-				i = 0;
-			}
-		}
-		
-		
-		
-		if( hdma_spi3_rx.State == HAL_DMA_STATE_READY )
-		{
-			if( j == 0 )
-			{
-				buffer_rx_A[0] = 0x0000;	buffer_rx_A[1] = 0x0000;
-				buffer_rx_A[2] = 0x0000;	buffer_rx_A[3] = 0x0000;	
-				if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_A, 4) != HAL_OK )
-					Error_Handler();
-				j = 1;
-			}
-			else if ( j == 1 )
-			{
-				buffer_rx_B[0] = 0x0000;	buffer_rx_B[1] = 0x0000;
-				buffer_rx_B[2] = 0x0000;	buffer_rx_B[3] = 0x0000;	
-				if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_B, 4) != HAL_OK )
-					Error_Handler();
-				j = 0;
-			}
-		}
-		
-
-
-
 
 
 
@@ -363,39 +275,19 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* I2S2 init function */
-static void MX_I2S2_Init(void)
-{
-
-  hi2s2.Instance = SPI2;
-  hi2s2.Init.Mode = I2S_MODE_SLAVE_TX;
-  hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s2.Init.DataFormat = I2S_DATAFORMAT_32B;
-  hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_48K;
-  hi2s2.Init.CPOL = I2S_CPOL_LOW;
-  hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
-  hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
-  if (HAL_I2S_Init(&hi2s2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-}
-
 /* I2S3 init function */
 static void MX_I2S3_Init(void)
 {
 
   hi2s3.Instance = SPI3;
-  hi2s3.Init.Mode = I2S_MODE_MASTER_RX;
+  hi2s3.Init.Mode = I2S_MODE_MASTER_TX;
   hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s3.Init.DataFormat = I2S_DATAFORMAT_32B;
   hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
   hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_48K;
   hi2s3.Init.CPOL = I2S_CPOL_LOW;
   hi2s3.Init.ClockSource = I2S_CLOCK_PLL;
-  hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
+  hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
   if (HAL_I2S_Init(&hi2s3) != HAL_OK)
   {
     Error_Handler();
@@ -410,9 +302,9 @@ static void MX_TIM6_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim6.Instance = TIM6;
-  htim6.Init.Prescaler = 0;
+  htim6.Init.Prescaler = 2100;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 0;
+  htim6.Init.Period = 1;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
     Error_Handler();
@@ -439,9 +331,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
-  /* DMA1_Stream4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
+  /* DMA1_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
 }
 
@@ -451,9 +343,11 @@ static void MX_DMA_Init(void)
         * Output
         * EVENT_OUT
         * EXTI
+     PC3   ------> I2S2_SD
      PA5   ------> SPI1_SCK
      PA6   ------> SPI1_MISO
      PA7   ------> SPI1_MOSI
+     PB10   ------> I2S2_CK
      PA9   ------> USB_OTG_FS_VBUS
      PA10   ------> USB_OTG_FS_ID
      PA11   ------> USB_OTG_FS_DM
@@ -484,10 +378,13 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Audio_RST_GPIO_Port, Audio_RST_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, CCLK_Pin|Audio_RST_Pin|CSN_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : CS_I2C_SPI_Pin */
   GPIO_InitStruct.Pin = CS_I2C_SPI_Pin;
@@ -502,6 +399,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(OTG_FS_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -523,10 +428,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PB10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : LD4_Pin LD3_Pin LD5_Pin LD6_Pin 
-                           Audio_RST_Pin */
+                           CCLK_Pin Audio_RST_Pin CSN_Pin */
   GPIO_InitStruct.Pin = LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
-                          |Audio_RST_Pin;
+                          |CCLK_Pin|Audio_RST_Pin|CSN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -546,18 +459,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  /*Configure GPIO pin : TEST_PIN_Pin */
+  GPIO_InitStruct.Pin = TEST_PIN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(TEST_PIN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : OTG_FS_OverCurrent_Pin */
   GPIO_InitStruct.Pin = OTG_FS_OverCurrent_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(OTG_FS_OverCurrent_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : CDTI_Pin */
+  GPIO_InitStruct.Pin = CDTI_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(CDTI_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Audio_SCL_Pin Audio_SDA_Pin */
   GPIO_InitStruct.Pin = Audio_SCL_Pin|Audio_SDA_Pin;

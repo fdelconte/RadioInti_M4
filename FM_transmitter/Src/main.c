@@ -146,7 +146,8 @@ int main(void)
 //	}
 	
 
-
+	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
+ 
 	
 
 	
@@ -169,7 +170,8 @@ int main(void)
   /* USER CODE BEGIN 3 */
 		
 		led_secuencia();
-		
+		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
+
 		//dma_tx_rx();
 
 //		counter++;

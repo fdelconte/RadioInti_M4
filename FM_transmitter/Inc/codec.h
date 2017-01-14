@@ -1,32 +1,68 @@
+// Header:
+// File Name: 
+// Author:
+// Date:
+
+
+//===========================INCLUDES=========================//
+
 #include "stm32f4xx.h"                  // Device header
 #include "RTE_Components.h"             // Component selection
 
-
 //===========================DEFINES=========================//
+
 // Codec AK4621EF reg
-#define AK4621EF_PDC	0
-#define AK4621EF_RC		1
-#define AK4621EF_CFC	2
-#define AK4621EF_DVC	3
-#define AK4621EF_R0		4
-#define AK4621EF_R1		5
-#define AK4621EF_LDC	6
-#define AK4621EF_RDC	7
-#define AK4621EF_LEDC	8
-#define AK4621EF_REDC 9
+#define AK4621EF_PDC		0
+#define AK4621EF_RC			1
+#define AK4621EF_CFC		2
+#define AK4621EF_DVC		3
+#define AK4621EF_R0			4
+#define AK4621EF_R1			5
+#define AK4621EF_LDC		6
+#define AK4621EF_RDC		7
+#define AK4621EF_LEDC		8
+#define AK4621EF_REDC 	9
+
+// Codec AK4621EF command
+#define CHIP_ADDRESS_0	1
+#define CHIP_ADDRESS_1	0
+#define READ_WRITE			1
 
 //===========================VARIABLES=========================//
+
 extern TIM_HandleTypeDef htim6;
 
+extern DMA_HandleTypeDef hdma_spi3_tx;
+extern DMA_HandleTypeDef hdma_i2s3_ext_rx;
+
+extern I2S_HandleTypeDef hi2s3;
+
+// Buffers para usar el codec AK4621EF con DMA
+extern uint32_t buffer_tx_A[8];
+	
+extern uint32_t buffer_rx_A[8];
+
+extern uint32_t *buffer_tx_aux;
+
+extern uint8_t transmission_ready;
+
+extern uint8_t toggle;
 
 //===========================Prototipos=========================//
 
+// Manejador de errores, prende todos los leds
 void Error_Handler ( void );
 
+// Indica que todo esta OK
 void led_secuencia ( void );
 
-void codec_send_data ( uint8_t address, uint8_t data );
+// AK4621EF inicializacion
+void AK4621EF_init ( void );
+
+// AK4621EF comunicacion SPI half-duplex
+void AK4621EF_send_data ( uint8_t address, uint8_t data );
+
+
 
 void dma_tx_rx ( void );
 
-void init_AK4621EF ( void );

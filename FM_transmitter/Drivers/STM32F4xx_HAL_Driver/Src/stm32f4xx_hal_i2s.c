@@ -742,7 +742,7 @@ HAL_StatusTypeDef HAL_I2S_Transmit_DMA(I2S_HandleTypeDef *hi2s, uint16_t *pData,
   {
     return  HAL_ERROR;
   }
-	
+
   if(hi2s->State == HAL_I2S_STATE_READY)
   {  
     hi2s->pTxBuffPtr = pData;

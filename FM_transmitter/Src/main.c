@@ -68,11 +68,19 @@ static void MX_TIM6_Init(void);
 
 /* USER CODE BEGIN 0 */
 
-uint32_t buffer_tx_A[4] = {0x00000011, 0x00002233, 0x00004455, 0x6677};
-uint32_t buffer_tx_B[4] = {0x8899, 0xAABB, 0xCCDD, 0xEEFF};
+// uint32_t buffer_tx_A[4] = {0x00001111, 0x22223333, 0x44445555, 0x66667777};
+// uint32_t buffer_tx_B[4] = {0x88889999, 0xAAAABBBB, 0xCCCCDDDD, 0xEEEEFFFF};
 
-uint32_t buffer_rx_A[4] = {0};
-uint32_t buffer_rx_B[4] = {0};
+uint32_t buffer_rx_A[8] = {0};
+
+uint32_t buffer_tx_A[8] = {0xFFFFFFFF, 0xFFFFFFFE, 0xFFFFFFFD ,0xFFFFFFFC,
+														0xFFFFFFFB, 0xFFFFFFFA, 0xFFFFFFF9 ,0xFFFFFFF8};
+
+uint32_t *buffer_tx_aux;
+
+uint8_t transmission_ready = 0;
+
+uint8_t toggle = 0;
 
 #define BUFFER_LENGTH 100
 #define buffer_dma		4
@@ -87,10 +95,9 @@ int main(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////// VARIABLES //////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-//	uint32_t led_count = 0;
-//	uint16_t buffer_tx_A1[] = {0xFFFF, 0x8001, 0x7FFE, 0x5A5A};
-//	uint16_t buffer_tx_B1[] = {0x5A5A, 0x7FFE, 0x8001, 0xFFFF};
 
+	
+	
 	
   /* USER CODE END 1 */
 
@@ -133,11 +140,25 @@ int main(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 
-	// Comienza TX con DMA
-	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_rx_A, 4) != HAL_OK )
+//	// Comienza TX con DMA
+	
+	buffer_tx_aux = buffer_tx_A;
+	transmission_ready = 1;
+	
+	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_rx_A, 8) != HAL_OK )
 	{
 			Error_Handler();
 	}
+	
+	
+//	HAL_StatusTypeDef HAL_DMAEx_MultiBufferStart_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t SecondMemAddress, uint32_t DataLength)
+	// Comienza TX con DMA
+//	if( HAL_DMAEx_MultiBufferStart_IT(&hdma_i2s3_ext_rx, hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_tx_B, 8) != HAL_OK )
+//	{
+//			Error_Handler();
+//	}
+	
+	
 	
 //	// Comienza RX con DMA
 //	if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_A, 4) != HAL_OK )
@@ -151,14 +172,6 @@ int main(void)
 	
 
 	
-	uint8_t codec_address = 0xFF;
-	uint8_t codec_data = 0x00;
-	
-	uint32_t counter = 0;
-	
-	
-	
-	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -169,23 +182,15 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 		
+		
+		
 		led_secuencia();
-		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
+		
+		
+//		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
 
-		//dma_tx_rx();
-
-//		counter++;
-//		
-//		if(counter == 100000)
-//		{
-//			codec_send_data( codec_address, codec_data );
-//			counter = 0;
-//		}
-
-
-
-	
-
+		
+//		dma_tx_rx();
 
 		
 //		//*********************************************************
@@ -284,9 +289,9 @@ static void MX_I2S3_Init(void)
   hi2s3.Instance = SPI3;
   hi2s3.Init.Mode = I2S_MODE_MASTER_TX;
   hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s3.Init.DataFormat = I2S_DATAFORMAT_32B;
+  hi2s3.Init.DataFormat = I2S_DATAFORMAT_24B;
   hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_48K;
+  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_96K;
   hi2s3.Init.CPOL = I2S_CPOL_LOW;
   hi2s3.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;

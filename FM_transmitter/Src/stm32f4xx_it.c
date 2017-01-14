@@ -48,11 +48,6 @@ volatile uint8_t bit_toggle = 0;
 
 
 
-extern uint32_t buffer_rx_A[4];
-extern uint32_t buffer_tx_A[4];
-
-
-
 
 /* USER CODE END 0 */
 
@@ -215,7 +210,10 @@ void DMA1_Stream0_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_i2s3_ext_rx);
   /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
 
-	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
+	
+//	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
+	
+	
   /* USER CODE END DMA1_Stream0_IRQn 1 */
 }
 
@@ -229,8 +227,11 @@ void DMA1_Stream5_IRQHandler(void)
   /* USER CODE END DMA1_Stream5_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_spi3_tx);
   /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
+	
+	
+//	HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *)buffer_tx_A, (uint16_t *)buffer_rx_A, 4);
 
+	
   /* USER CODE END DMA1_Stream5_IRQn 1 */
 }
 

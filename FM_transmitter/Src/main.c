@@ -34,10 +34,11 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
+
 #define ARM_MATH_CM4
 #include "arm_math.h"
-
 #include "codec.h"
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -68,35 +69,25 @@ static void MX_TIM6_Init(void);
 
 /* USER CODE BEGIN 0 */
 
-// uint32_t buffer_tx_A[4] = {0x00001111, 0x22223333, 0x44445555, 0x66667777};
-// uint32_t buffer_tx_B[4] = {0x88889999, 0xAAAABBBB, 0xCCCCDDDD, 0xEEEEFFFF};
+// Buffers de comunicacion I2S
+uint32_t buffer_rx[8] = {0};
+uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
+												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
 
-uint32_t buffer_rx_A[8] = {0};
-
-uint32_t buffer_tx_A[8] = {0xFFFFFFFF, 0xFFFFFFFE, 0xFFFFFFFD ,0xFFFFFFFC,
-														0xFFFFFFFB, 0xFFFFFFFA, 0xFFFFFFF9 ,0xFFFFFFF8};
-
+// Buffers auxiliares para realizar dsp												
 uint32_t *buffer_tx_aux;
+uint32_t *buffer_rx_aux;
 
-uint8_t transmission_ready = 0;
-
-uint8_t toggle = 0;
-
-#define BUFFER_LENGTH 100
-#define buffer_dma		4
-
+// Manejo de los callback												
+uint8_t toggle_buffer = 0;	
+														
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////// VARIABLES //////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
 	
 	
   /* USER CODE END 1 */
@@ -138,33 +129,17 @@ int main(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Pruebas I2S_3 // TX mode // DMA // 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+	buffer_tx_aux = buffer_tx;
 	
-
-//	// Comienza TX con DMA
+	toggle_buffer = BUFFER_A;
 	
-	buffer_tx_aux = buffer_tx_A;
-	transmission_ready = 1;
-	
-	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_rx_A, 8) != HAL_OK )
+	if( HAL_I2SEx_TransmitReceive_DMA(&hi2s3, (uint16_t *) buffer_tx, (uint16_t *) buffer_rx, BUFFER_LENGTH) != HAL_OK )
 	{
 			Error_Handler();
 	}
 	
 	
-//	HAL_StatusTypeDef HAL_DMAEx_MultiBufferStart_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t SecondMemAddress, uint32_t DataLength)
-	// Comienza TX con DMA
-//	if( HAL_DMAEx_MultiBufferStart_IT(&hdma_i2s3_ext_rx, hi2s3, (uint16_t *) buffer_tx_A, (uint16_t *)buffer_tx_B, 8) != HAL_OK )
-//	{
-//			Error_Handler();
-//	}
-	
-	
-	
-//	// Comienza RX con DMA
-//	if( HAL_I2S_Receive_DMA(&hi2s3, buffer_rx_A, 4) != HAL_OK )
-//	{
-//			Error_Handler();
-//	}
 	
 
 	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
@@ -182,15 +157,13 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 		
-		
-		
 		led_secuencia();
+		dma_tx_rx();
 		
 		
 //		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
 
 		
-//		dma_tx_rx();
 
 		
 //		//*********************************************************
@@ -289,9 +262,9 @@ static void MX_I2S3_Init(void)
   hi2s3.Instance = SPI3;
   hi2s3.Init.Mode = I2S_MODE_MASTER_TX;
   hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s3.Init.DataFormat = I2S_DATAFORMAT_24B;
+  hi2s3.Init.DataFormat = I2S_DATAFORMAT_32B;
   hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
-  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_96K;
+  hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_48K;
   hi2s3.Init.CPOL = I2S_CPOL_LOW;
   hi2s3.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s3.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;

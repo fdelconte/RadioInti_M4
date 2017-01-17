@@ -28,8 +28,16 @@
 #define CHIP_ADDRESS_1	0
 #define READ_WRITE			1
 
+// Double buffer
+#define	BUFFER_A				0
+#define	BUFFER_B				1	
+
+// Init transsmision
+#define BUFFER_LENGTH 	8
+
 //===========================VARIABLES=========================//
 
+// Handlers de los perifericos utilizados
 extern TIM_HandleTypeDef htim6;
 
 extern DMA_HandleTypeDef hdma_spi3_tx;
@@ -37,16 +45,16 @@ extern DMA_HandleTypeDef hdma_i2s3_ext_rx;
 
 extern I2S_HandleTypeDef hi2s3;
 
-// Buffers para usar el codec AK4621EF con DMA
-extern uint32_t buffer_tx_A[8];
-	
-extern uint32_t buffer_rx_A[8];
+// Buffers de comunicacion I2S
+extern uint32_t buffer_tx[8];
+extern uint32_t buffer_rx[8];
 
+// Buffers auxiliares para realizar dsp
 extern uint32_t *buffer_tx_aux;
+extern uint32_t *buffer_rx_aux;
 
-extern uint8_t transmission_ready;
-
-extern uint8_t toggle;
+// Manejo de los callback
+extern uint8_t toggle_buffer;
 
 //===========================Prototipos=========================//
 
@@ -62,7 +70,7 @@ void AK4621EF_init ( void );
 // AK4621EF comunicacion SPI half-duplex
 void AK4621EF_send_data ( uint8_t address, uint8_t data );
 
-
-
+// Controla la comunicacion full duplex con el codec
 void dma_tx_rx ( void );
+
 

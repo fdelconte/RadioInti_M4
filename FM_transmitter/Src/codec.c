@@ -10,10 +10,11 @@
 
 //===========================VARIABLES=========================//
 
-// Para el init del codec
+// Codec init counter
 volatile uint8_t bit_counter = 0;
 
-
+// Enable DSP
+volatile uint8_t transmission_ready = HAL_BUSY;
 
 //===========================FUNCIONES=========================//
 
@@ -135,57 +136,88 @@ void AK4621EF_init ( void )
 //
 
 
-
-
-
-
-
-
 // Manejo de buffers en la comunicación I2S
 void dma_tx_rx ( void )
 {
-}
+	if ( transmission_ready == HAL_OK )
+	{
+		transmission_ready = HAL_BUSY;
+		
+		if( toggle_buffer == BUFFER_A )
+		{
+			buffer_tx_aux[0] = buffer_rx_aux[0] + 1;
+			buffer_tx_aux[1] = buffer_rx_aux[1] + 1;
+			buffer_tx_aux[2] = buffer_rx_aux[2] + 1;
+			buffer_tx_aux[3] = buffer_rx_aux[3] + 1;
+		}
+		else
+		{
+			buffer_tx_aux[0] = buffer_rx_aux[0] + 1;
+			buffer_tx_aux[1] = buffer_rx_aux[1] + 1;
+			buffer_tx_aux[2] = buffer_rx_aux[2] + 1;
+			buffer_tx_aux[3] = buffer_rx_aux[3] + 1;
+		}
 
+		toggle_buffer = !toggle_buffer;
+		
+		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
+	}
+}
+//
+
+
+// Half complete callback TX
 void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
 }
+//
 
+
+// Half complete callback RX
 void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-	if(transmission_ready == 0)
+	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_SET);
+
+	if(toggle_buffer == BUFFER_A)
 	{
-		buffer_tx_aux = buffer_tx_A;
+		buffer_tx_aux = buffer_tx;
+		buffer_rx_aux = buffer_rx;
 	}
 	else
 	{
-		buffer_tx_aux = &(buffer_tx_A[4]);
+		buffer_tx_aux = &(buffer_tx[BUFFER_LENGTH/2]);
+		buffer_rx_aux = &(buffer_rx[BUFFER_LENGTH/2]);
 	}
-	transmission_ready = !transmission_ready;
-	
-	buffer_tx_aux[0] -= 2;
-	buffer_tx_aux[1] -= 2;
-	buffer_tx_aux[2] -= 2;
-	buffer_tx_aux[3] -= 2;
+		
+	transmission_ready = HAL_OK;
 }
+//
 
+
+// Complete callback TX
 void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
 }
+//
 
+
+// Complete callback RX
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-	if(transmission_ready == 0)
+	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_SET);
+
+	if(toggle_buffer == BUFFER_A)
 	{
-		buffer_tx_aux = buffer_tx_A;
+		buffer_tx_aux = buffer_tx;
 	}
 	else
 	{
-		buffer_tx_aux = &(buffer_tx_A[4]);
+		buffer_tx_aux = &(buffer_tx[4]);
 	}
-	transmission_ready = !transmission_ready;
 	
-	buffer_tx_aux[0] -= 2;
-	buffer_tx_aux[1] -= 2;
-	buffer_tx_aux[2] -= 2;
-	buffer_tx_aux[3] -= 2;
+	transmission_ready = HAL_OK;
 }
+//
+
+
+

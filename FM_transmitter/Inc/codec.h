@@ -33,7 +33,7 @@
 #define	BUFFER_B				1	
 
 // Init transsmision
-#define BUFFER_LENGTH 	8
+#define BUFFER_LENGTH 	2
 
 //===========================VARIABLES=========================//
 

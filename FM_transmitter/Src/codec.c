@@ -122,15 +122,37 @@ void AK4621EF_send_data ( uint8_t address, uint8_t data )
 // Inicializacion del codec AK4621EF
 void AK4621EF_init ( void )
 {
+	uint32_t i = 0;
+	
+	HAL_GPIO_WritePin(PDN_GPIO_Port, PDN_Pin, GPIO_PIN_SET);
+
 	AK4621EF_send_data( AK4621EF_PDC , 0x07 );
+	for(i = 0; i < 5000; i++) {}
+	
 	AK4621EF_send_data( AK4621EF_RC , 0x03 );
+	for(i = 0; i < 5000; i++) {}
+	
 	AK4621EF_send_data( AK4621EF_CFC , 0x60 );
+	for(i = 0; i < 5000; i++) {}
+	
 	AK4621EF_send_data( AK4621EF_DVC , 0x62 );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_R0 , 0x00 );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_R1 , 0x00 );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_LDC , 0xFF );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_RDC , 0xFF );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_LEDC , 0x0F );
+	for(i = 0; i < 5000; i++) {}
+		
 	AK4621EF_send_data( AK4621EF_REDC , 0x0F );
 }
 //

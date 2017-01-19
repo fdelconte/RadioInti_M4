@@ -45,6 +45,8 @@ extern DMA_HandleTypeDef hdma_i2s3_ext_rx;
 
 extern I2S_HandleTypeDef hi2s3;
 
+extern SPI_HandleTypeDef hspi1;
+
 // Buffers de comunicacion I2S
 extern uint32_t buffer_tx[8];
 extern uint32_t buffer_rx[8];

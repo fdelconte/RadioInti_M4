@@ -56,65 +56,7 @@ void led_secuencia (void)
 // Comunicacion SPI half-duplex para configurar al codec AK4621EF
 void AK4621EF_send_data ( uint8_t address, uint8_t data )
 {
-	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
-	HAL_GPIO_WritePin(CCLK_GPIO_Port, CCLK_Pin, GPIO_PIN_RESET);				// Bajo la linea de CCLK
 	
-	HAL_TIM_Base_Start_IT(&htim6);																			// Start Timer
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) CHIP_ADDRESS_0);							// BIT_0
-	while(bit_counter != 1) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) CHIP_ADDRESS_1);							// BIT_1
-	while(bit_counter != 2) {}
-
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) READ_WRITE);									// BIT_2
-	while(bit_counter != 3) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (address >> 4) & 0x01) );			// BIT_3
-	while(bit_counter != 4) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (address >> 3) & 0x1) );			// BIT_4
-	while(bit_counter != 5) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (address >> 2) & 0x1) );			// BIT_5
-	while(bit_counter != 6) {}
-		
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (address >> 1) & 0x1) );			// BIT_6
-	while(bit_counter != 7) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (address >> 0) & 0x1) );			// BIT_7
-	while(bit_counter != 8) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 7) & 0x1) );				// BIT_8
-	while(bit_counter != 9) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 6) & 0x1) );				// BIT_9
-	while(bit_counter != 10) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 5) & 0x1) );				// BIT_10
-	while(bit_counter != 11) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 4) & 0x1) );				// BIT_11
-	while(bit_counter != 12) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 3) & 0x1) );				// BIT_12
-	while(bit_counter != 13) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 2) & 0x1) );				// BIT_13
-	while(bit_counter != 14) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 1) & 0x1) );				// BIT_14
-	while(bit_counter != 15) {}
-	
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, (GPIO_PinState) ( (data >> 7) & 0x1) );				// BIT_15
-	while(bit_counter != 16) {}
-
-	HAL_TIM_Base_Stop_IT(&htim6);																			// Stop Timer
-
-	bit_counter = 0;
-	HAL_GPIO_WritePin(CDTI_GPIO_Port, CDTI_Pin, GPIO_PIN_SET);				// Subo la linea de CDTI
-	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);					// Subo la linea de CSN	
-	HAL_GPIO_WritePin(CCLK_GPIO_Port, CCLK_Pin, GPIO_PIN_SET);				// Subo la linea de CCLK
 }
 //
 
@@ -122,38 +64,79 @@ void AK4621EF_send_data ( uint8_t address, uint8_t data )
 // Inicializacion del codec AK4621EF
 void AK4621EF_init ( void )
 {
-	uint32_t i = 0;
-	
-	HAL_GPIO_WritePin(PDN_GPIO_Port, PDN_Pin, GPIO_PIN_SET);
+	uint16_t trama = 0;
 
-	AK4621EF_send_data( AK4621EF_PDC , 0x07 );
-	for(i = 0; i < 5000; i++) {}
+	HAL_GPIO_WritePin(PDN_GPIO_Port, PDN_Pin, GPIO_PIN_SET);
 	
-	AK4621EF_send_data( AK4621EF_RC , 0x03 );
-	for(i = 0; i < 5000; i++) {}
-	
-	AK4621EF_send_data( AK4621EF_CFC , 0x60 );
-	for(i = 0; i < 5000; i++) {}
-	
-	AK4621EF_send_data( AK4621EF_DVC , 0x62 );
-	for(i = 0; i < 5000; i++) {}
+	trama = 0xA007;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA103;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA260;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA362;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 		
-	AK4621EF_send_data( AK4621EF_R0 , 0x00 );
-	for(i = 0; i < 5000; i++) {}
+	trama = 0xA400;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA500;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 		
-	AK4621EF_send_data( AK4621EF_R1 , 0x00 );
-	for(i = 0; i < 5000; i++) {}
+	trama = 0xA6FF;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 		
-	AK4621EF_send_data( AK4621EF_LDC , 0xFF );
-	for(i = 0; i < 5000; i++) {}
-		
-	AK4621EF_send_data( AK4621EF_RDC , 0xFF );
-	for(i = 0; i < 5000; i++) {}
-		
-	AK4621EF_send_data( AK4621EF_LEDC , 0x0F );
-	for(i = 0; i < 5000; i++) {}
-		
-	AK4621EF_send_data( AK4621EF_REDC , 0x0F );
+	trama = 0xA7FF;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA80F;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	trama = 0xA90F;
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
+	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
+			Error_Handler();
+	while(hspi1.State != HAL_SPI_STATE_READY ) {};
+	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 }
 //
 

@@ -64,6 +64,7 @@ void AK4621EF_send_data ( uint8_t address, uint8_t data )
 // Inicializacion del codec AK4621EF
 void AK4621EF_init ( void )
 {
+	uint32_t demora = 0;
 	uint16_t trama = 0;
 
 	HAL_GPIO_WritePin(PDN_GPIO_Port, PDN_Pin, GPIO_PIN_SET);
@@ -74,7 +75,9 @@ void AK4621EF_init ( void )
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
-
+	
+	for(demora = 0; demora < 1000; demora++){};
+		
 	trama = 0xA103;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
@@ -82,19 +85,25 @@ void AK4621EF_init ( void )
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 
-	trama = 0xA260;
+	for(demora = 0; demora < 1000; demora++){};
+			
+	trama = 0xA26A;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 
-	trama = 0xA362;
+	for(demora = 0; demora < 1000; demora++){};
+			
+	trama = 0xA361;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+		
+	for(demora = 0; demora < 1000; demora++){};	
 		
 	trama = 0xA400;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
@@ -103,12 +112,16 @@ void AK4621EF_init ( void )
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 
+	for(demora = 0; demora < 1000; demora++){};
+		
 	trama = 0xA500;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+	
+	for(demora = 0; demora < 1000; demora++){};
 		
 	trama = 0xA6FF;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
@@ -116,6 +129,8 @@ void AK4621EF_init ( void )
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+
+	for(demora = 0; demora < 1000; demora++){};		
 		
 	trama = 0xA7FF;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
@@ -124,6 +139,8 @@ void AK4621EF_init ( void )
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 
+	for(demora = 0; demora < 1000; demora++){};
+		
 	trama = 0xA80F;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
@@ -131,6 +148,8 @@ void AK4621EF_init ( void )
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 
+	for(demora = 0; demora < 1000; demora++){};		
+		
 	trama = 0xA90F;
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_RESET);					// Bajo la linea de CSN
 	if( HAL_SPI_Transmit(&hspi1, (uint8_t *) &trama, 1, 50) != HAL_OK )										// Transmito
@@ -150,17 +169,27 @@ void dma_tx_rx ( void )
 		
 		if( toggle_buffer == BUFFER_A )
 		{
-			buffer_tx_aux[0] = buffer_rx_aux[0] + 1;
-			buffer_tx_aux[1] = buffer_rx_aux[1] + 1;
-			buffer_tx_aux[2] = buffer_rx_aux[2] + 1;
-			buffer_tx_aux[3] = buffer_rx_aux[3] + 1;
+			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
+			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
+			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
+			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
+			
+//			buffer_tx_aux[0] = 0xFFFFFFFF;
+//			buffer_tx_aux[1] = 0xFFFFFFFF;
+//			buffer_tx_aux[2] = 0xFFFFFFFF;
+//			buffer_tx_aux[3] = 0xFFFFFFFF;
 		}
 		else
 		{
-			buffer_tx_aux[0] = buffer_rx_aux[0] + 1;
-			buffer_tx_aux[1] = buffer_rx_aux[1] + 1;
-			buffer_tx_aux[2] = buffer_rx_aux[2] + 1;
-			buffer_tx_aux[3] = buffer_rx_aux[3] + 1;
+			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
+			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
+			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
+			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
+					
+//			buffer_tx_aux[0] = 0xFFFFFFFF;
+//			buffer_tx_aux[1] = 0xFFFFFFFF;
+//			buffer_tx_aux[2] = 0xFFFFFFFF;
+//			buffer_tx_aux[3] = 0xFFFFFFFF;
 		}
 
 		toggle_buffer = !toggle_buffer;

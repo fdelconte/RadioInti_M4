@@ -23,25 +23,25 @@ void led_secuencia (void)
 {
 	static uint32_t led_count = 0;
 
-	if (led_count == 300000)
+	if (led_count == 30000)
 	{
 		HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_RESET);
 		led_count++;
 	}
-	else if (led_count == 600000)
+	else if (led_count == 60000)
 	{
 		HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD4_Pin, GPIO_PIN_RESET);
 		led_count++;
 	}
-	else if (led_count == 900000)
+	else if (led_count == 90000)
 	{
 		HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD3_Pin, GPIO_PIN_RESET);			
 		led_count++;
 	}
-	else if (led_count == 1200000)
+	else if (led_count == 120000)
 	{
 		HAL_GPIO_WritePin(GPIOD, LD6_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOD, LD5_Pin, GPIO_PIN_RESET);			
@@ -186,10 +186,10 @@ void dma_tx_rx ( void )
 			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
 			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
 					
-//			buffer_tx_aux[0] = 0xFFFFFFFF;
-//			buffer_tx_aux[1] = 0xFFFFFFFF;
-//			buffer_tx_aux[2] = 0xFFFFFFFF;
-//			buffer_tx_aux[3] = 0xFFFFFFFF;
+//			buffer_tx_aux[0] = 0;
+//			buffer_tx_aux[1] = 0;
+//			buffer_tx_aux[2] = 0;
+//			buffer_tx_aux[3] = 0;
 		}
 
 		toggle_buffer = !toggle_buffer;

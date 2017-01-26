@@ -74,8 +74,9 @@ static void MX_SPI1_Init(void);
 
 // Buffers de comunicacion I2S
 uint32_t buffer_rx[8] = {0};
-uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
-												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
+//uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
+//												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
+uint32_t buffer_tx[8] = {0};
 
 // Buffers auxiliares para realizar dsp												
 uint32_t *buffer_tx_aux;
@@ -134,6 +135,7 @@ int main(void)
 	// Pruebas I2S_3 // TX mode // DMA // 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 	buffer_tx_aux = buffer_tx;
 	
 	toggle_buffer = BUFFER_A;
@@ -142,11 +144,13 @@ int main(void)
 	{
 			Error_Handler();
 	}
+	
+	AK4621EF_init();
 
 
 	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
  
-	uint32_t i = 0;
+//	uint32_t i = 0;
 
 	
   /* USER CODE END 2 */
@@ -162,12 +166,11 @@ int main(void)
 		led_secuencia();
 		dma_tx_rx();
 		
-		if(i >= 1000)
-		{
-			AK4621EF_init();
-			i = 0;
-		}
-		i++;
+//		if(i >= 1000)
+//		{
+//			i = 0;
+//		}
+//		i++;
 		
 
 		

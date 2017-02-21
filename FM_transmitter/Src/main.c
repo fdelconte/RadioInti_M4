@@ -73,10 +73,10 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN 0 */
 
 // Buffers de comunicacion I2S
-uint32_t buffer_rx[8] = {0};
+uint32_t buffer_rx[16] = {0};
 //uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
 //												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
-uint32_t buffer_tx[8] = {0};
+uint32_t buffer_tx[16] = {0};
 
 // Buffers auxiliares para realizar dsp												
 uint32_t *buffer_tx_aux;

@@ -33,7 +33,7 @@
 #define	BUFFER_B				1	
 
 // Init transsmision
-#define BUFFER_LENGTH 	2
+#define BUFFER_LENGTH 	4
 
 //===========================VARIABLES=========================//
 
@@ -48,8 +48,8 @@ extern I2S_HandleTypeDef hi2s3;
 extern SPI_HandleTypeDef hspi1;
 
 // Buffers de comunicacion I2S
-extern uint32_t buffer_tx[8];
-extern uint32_t buffer_rx[8];
+extern uint32_t buffer_tx[16];
+extern uint32_t buffer_rx[16];
 
 // Buffers auxiliares para realizar dsp
 extern uint32_t *buffer_tx_aux;

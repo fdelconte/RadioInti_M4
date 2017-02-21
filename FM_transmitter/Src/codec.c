@@ -163,36 +163,47 @@ void AK4621EF_init ( void )
 // Manejo de buffers en la comunicación I2S
 void dma_tx_rx ( void )
 {
+	uint32_t i = 0;
+	
 	if ( transmission_ready == HAL_OK )
 	{
 		transmission_ready = HAL_BUSY;
 		
-		if( toggle_buffer == BUFFER_A )
+//		if( toggle_buffer == BUFFER_A )
+//		{
+		for(i = 0 ; i < BUFFER_LENGTH ; i++)
 		{
-			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
-			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
-			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
-			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
-			
+			buffer_tx_aux[i] = buffer_rx_aux[i];
+		}
+		
+//			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
+//			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
+//			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
+//			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
+//			
 //			buffer_tx_aux[0] = 0xFFFFFFFF;
 //			buffer_tx_aux[1] = 0xFFFFFFFF;
 //			buffer_tx_aux[2] = 0xFFFFFFFF;
 //			buffer_tx_aux[3] = 0xFFFFFFFF;
-		}
-		else
-		{
-			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
-			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
-			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
-			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
-					
-//			buffer_tx_aux[0] = 0;
-//			buffer_tx_aux[1] = 0;
-//			buffer_tx_aux[2] = 0;
-//			buffer_tx_aux[3] = 0;
-		}
+			
+//			toggle_buffer = BUFFER_B;
+//		}
+//		else
+//		{
+//			buffer_tx_aux[0] = buffer_rx_aux[0];// + 1;
+//			buffer_tx_aux[1] = buffer_rx_aux[1];// + 1;
+//			buffer_tx_aux[2] = buffer_rx_aux[2];// + 1;
+//			buffer_tx_aux[3] = buffer_rx_aux[3];// + 1;
+//					
+////			buffer_tx_aux[0] = 0;
+////			buffer_tx_aux[1] = 0;
+////			buffer_tx_aux[2] = 0;
+////			buffer_tx_aux[3] = 0;
+//			
+//			toggle_buffer = BUFFER_A;
+//		}
 
-		toggle_buffer = !toggle_buffer;
+//		toggle_buffer = !toggle_buffer;
 		
 		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
 	}
@@ -203,6 +214,7 @@ void dma_tx_rx ( void )
 // Half complete callback TX
 void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+	//transmission_ready = HAL_OK;
 }
 //
 
@@ -212,16 +224,15 @@ void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
 	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_SET);
 
-	if(toggle_buffer == BUFFER_A)
-	{
+//	if(toggle_buffer == BUFFER_A)
+//	{
 		buffer_tx_aux = buffer_tx;
 		buffer_rx_aux = buffer_rx;
-	}
-	else
-	{
-		buffer_tx_aux = &(buffer_tx[BUFFER_LENGTH/2]);
-		buffer_rx_aux = &(buffer_rx[BUFFER_LENGTH/2]);
-	}
+//	}
+//	else
+//	{
+//		Error_Handler();
+//	}
 		
 	transmission_ready = HAL_OK;
 }
@@ -231,6 +242,7 @@ void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 // Complete callback TX
 void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+	//transmission_ready = HAL_OK;
 }
 //
 
@@ -240,14 +252,15 @@ void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
 	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_SET);
 
-	if(toggle_buffer == BUFFER_A)
-	{
-		buffer_tx_aux = buffer_tx;
-	}
-	else
-	{
-		buffer_tx_aux = &(buffer_tx[4]);
-	}
+//	if(toggle_buffer == BUFFER_B)
+//	{
+		buffer_tx_aux = &(buffer_tx[BUFFER_LENGTH]);
+		buffer_rx_aux = &(buffer_rx[BUFFER_LENGTH]);
+//	}
+//	else
+//	{
+//		Error_Handler();
+//	}
 	
 	transmission_ready = HAL_OK;
 }

@@ -156,6 +156,9 @@ void AK4621EF_init ( void )
 			Error_Handler();
 	while(hspi1.State != HAL_SPI_STATE_READY ) {};
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
+		
+	// Inicializo el filtro digital
+	arm_fir_init_q31( &lowpass, FILTER_LENGTH, lowpassfilter, pState, BUFFER_LENGTH/4 );
 }
 //
 
@@ -191,7 +194,7 @@ void dma_tx_rx ( void )
 				else if( CANAL == CH_L_2 )
 				{
 					canal_L[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
-					canal_L[j] = canal_L[j] >> 1;
+					canal_L[j] = canal_L[j] >> 8;
 					CANAL = CH_R_1;
 				}
 				else if( CANAL == CH_R_1 )
@@ -202,7 +205,7 @@ void dma_tx_rx ( void )
 				else if( CANAL == CH_R_2 )
 				{
 					canal_R[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
-					canal_R[j] = canal_R[j] >> 1;
+					canal_R[j] = canal_R[j] >> 8;
 					CANAL = CH_L_1;
 					j++;
 				}
@@ -213,45 +216,63 @@ void dma_tx_rx ( void )
 			
 		#if MPX
 	
-			// Armo el vector con la suma
-			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha
+			// Filtro los dos canales de entrada
+			// Filtro FIR con fpaso 15KHz y fcorte 19KHz
+			arm_fir_q31( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
+			arm_fir_q31( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
 		
-			arm_sub_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha
-		
-			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita nada
-		
-			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Otro desplazamiento
-
-			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Otro desplazamiento
-		
-
-//			arm_mult_q31( (q31_t *) aux3, (q31_t *) aux2, (q31_t *) aux1, 1 );
-
-		
-			j = 0;
+			// Armo el vector con la suma			L+R
+			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
 			
-			//rearma tal como llego el hijoe´mil puta
-			for(i = 0 ; i < BUFFER_LENGTH ; i++)
-			{
-				suma[j] = suma[j] << 1;
-				buffer_tx_aux[i] = ((suma[j] >> 16) & 0x0000FFFF);
-				buffer_tx_aux[i+2] = buffer_tx_aux[i];
+			// Armo el vector con la resta		L-R
+			arm_sub_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha (+1)
+		
+			// Desplazo en frecuencia				 (L-R)*piloto38KHz
+			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
+		
+			// Armo mpx con L+R y L-R
+			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Necesita un desplazamiento hacia la derecha (+2)
 
-				buffer_tx_aux[i+1] = (suma[j] & 0x0000FFFF);			
-				buffer_tx_aux[i+3] = buffer_tx_aux[i+1];
+			// Agrego el piloto
+			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
 
-				i += 3;
-				j++;
-			}
+			#if ONLY_LPF
+				// Rearmo el vector de salida
+				for(i = 0, j=0 ; i < BUFFER_LENGTH ; i+=4, j++)
+				{
+					buffer_tx_aux[i] = ((canal_L_filtrado[j] >> 16) & 0x0000FFFF);
+					buffer_tx_aux[i+2] = ((canal_R_filtrado[j] >> 16) & 0x0000FFFF);
+
+					buffer_tx_aux[i+1] = (canal_L_filtrado[j] & 0x0000FFFF);			
+					buffer_tx_aux[i+3] = (canal_R_filtrado[j] & 0x0000FFFF);			
+				}
+			#else
+				/*	Desplazamientos
+				*		Tener en cuenta que estamos trabajando con aritmética de punto fijo, por lo tanto al realizar una suma o resta, su resultado
+				*		tendrá una bit de más, por lo tanto debe desplazarse teniendo en cuenta este hecho.
+				*		Tenemos 3 sumas:
+				*			1- L+R y L-R (que multiplicado por el piloto mantiene la longitud del vector)
+				*			2- La suma de los vectores descriptos anteriormente
+				*			3- La suma del piloto de 19KHz para completar la señal MPX
+				*/
+
+				// Rearmamos el vector a ser transmitido según el protocolo I2S
+				for(i = 0 ; i < BUFFER_LENGTH ; i++)
+				{
+					suma[j] = suma[j] << 1;
+					buffer_tx_aux[i] = ((suma[j] >> 11) & 0x0000FFFF);
+					buffer_tx_aux[i+2] = buffer_tx_aux[i];
+
+					buffer_tx_aux[i+1] = ((suma[j] << 5) & 0x0000FF00);
+					buffer_tx_aux[i+3] = buffer_tx_aux[i+1];
+
+					i += 3;
+					j++;
+				}
+			#endif
 		
 		#endif
-		
-		
-
-//	arm_biquad_cascade_df2T_f32(S,pSrcA,pDst,blockSize);
-
-		
-		
+	
 		HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
 	}
 }

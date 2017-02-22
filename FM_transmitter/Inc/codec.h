@@ -17,6 +17,10 @@
 #define LOOPBACK 				0
 #define	MPX							!LOOPBACK
 
+#if MPX == 1
+	#define ONLY_LPF			0
+#endif
+
 //===========================DEFINES=========================//
 
 // Codec AK4621EF reg
@@ -41,14 +45,21 @@
 #define	BUFFER_B				1	
 
 // Vector length
-#define BUFFER_LENGTH 	16
-#define FILTER_LENGTH 	4
+#define BUFFER_LENGTH 	2048
+#define FILTER_LENGTH 	92
 
 // Separacion de canales
 #define CH_L_1					1
 #define CH_L_2					2
 #define CH_R_1					3
 #define CH_R_2					4
+
+// Filtro digital
+/*	pState points to the array of state variables. pState is of length numTaps+blockSize-1 samples, where blockSize 
+*		is the number of input samples processed by each call to arm_fir_q31(). 
+*		92 + 512 - 1 = 603
+*/
+#define PSTATE_LENGTH		603
 
 //===========================VARIABLES=========================//
 
@@ -73,15 +84,21 @@ extern uint32_t *buffer_rx_aux;
 // Buffers dsp
 extern q31_t canal_L[BUFFER_LENGTH/4];
 extern q31_t canal_R[BUFFER_LENGTH/4];
+extern q31_t canal_L_filtrado[BUFFER_LENGTH/4];
+extern q31_t canal_R_filtrado[BUFFER_LENGTH/4];
 extern q31_t suma[BUFFER_LENGTH/4];
 extern q31_t resta[BUFFER_LENGTH/4];
 extern q31_t mpx[BUFFER_LENGTH/4];
 extern q31_t lowpassfilter[FILTER_LENGTH];
 extern q31_t piloto19k[BUFFER_LENGTH/4];
 extern q31_t piloto38k[BUFFER_LENGTH/4];
+extern q31_t pState[PSTATE_LENGTH];
 
 // Armado de los canales
 extern volatile uint8_t CANAL;
+
+// Filtro digital
+extern arm_fir_instance_q31 lowpass;
 
 //===========================Prototipos=========================//
 

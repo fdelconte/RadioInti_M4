@@ -159,6 +159,10 @@ void AK4621EF_init ( void )
 }
 //
 
+q31_t auxiliar[4] = {0x11112222, 0x33334444, 0x55556666, 0x77778888};
+q31_t aux1[1] = {0};
+q31_t aux2[1] = {0x40000000};
+q31_t aux3[1] = {0x40000000};
 
 // Manejo de buffers en la comunicación I2S
 void dma_tx_rx ( void )
@@ -210,20 +214,24 @@ void dma_tx_rx ( void )
 		#if MPX
 	
 			// Armo el vector con la suma
-			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );
+			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha
 		
-//			arm_sub_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) resta, (BUFFER_LENGTH/4) );
+			arm_sub_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha
 		
-//			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38, (q31_t *) mpx, (BUFFER_LENGTH/4) );
+			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita nada
 		
-//			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );
+			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Otro desplazamiento
 
-//			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19, (q31_t *) mpx, (BUFFER_LENGTH/4) );
+			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Otro desplazamiento
+		
+
+//			arm_mult_q31( (q31_t *) aux3, (q31_t *) aux2, (q31_t *) aux1, 1 );
+
 		
 			j = 0;
 			
 			//rearma tal como llego el hijoe´mil puta
-			for(i = 0 ; i < BUFFER_LENGTH/2 ; i++)
+			for(i = 0 ; i < BUFFER_LENGTH ; i++)
 			{
 				suma[j] = suma[j] << 1;
 				buffer_tx_aux[i] = ((suma[j] >> 16) & 0x0000FFFF);

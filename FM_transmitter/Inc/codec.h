@@ -40,8 +40,9 @@
 #define	BUFFER_A				0
 #define	BUFFER_B				1	
 
-// Init transsmision
-#define BUFFER_LENGTH 	4
+// Vector length
+#define BUFFER_LENGTH 	16
+#define FILTER_LENGTH 	4
 
 // Separacion de canales
 #define CH_L_1					1
@@ -53,30 +54,31 @@
 
 // Handlers de los perifericos utilizados
 extern TIM_HandleTypeDef htim6;
-
 extern DMA_HandleTypeDef hdma_spi3_tx;
 extern DMA_HandleTypeDef hdma_i2s3_ext_rx;
-
+extern SPI_HandleTypeDef hspi1;
 extern I2S_HandleTypeDef hi2s3;
 
-extern SPI_HandleTypeDef hspi1;
+// Manejo de los callback
+extern uint8_t toggle_buffer;
 
 // Buffers de comunicacion I2S
 extern uint32_t buffer_tx[BUFFER_LENGTH*2];
 extern uint32_t buffer_rx[BUFFER_LENGTH*2];
 
-// Buffers auxiliares para realizar dsp
+// Punteros auxiliares para realizar dsp
 extern uint32_t *buffer_tx_aux;
 extern uint32_t *buffer_rx_aux;
 
-// Manejo de los callback
-extern uint8_t toggle_buffer;
-
-// Canales
-extern q31_t canal_L[BUFFER_LENGTH];
-extern q31_t canal_R[BUFFER_LENGTH];
+// Buffers dsp
+extern q31_t canal_L[BUFFER_LENGTH/4];
+extern q31_t canal_R[BUFFER_LENGTH/4];
 extern q31_t suma[BUFFER_LENGTH/4];
 extern q31_t resta[BUFFER_LENGTH/4];
+extern q31_t mpx[BUFFER_LENGTH/4];
+extern q31_t lowpassfilter[FILTER_LENGTH];
+extern q31_t piloto19k[BUFFER_LENGTH/4];
+extern q31_t piloto38k[BUFFER_LENGTH/4];
 
 // Armado de los canales
 extern volatile uint8_t CANAL;

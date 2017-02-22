@@ -35,9 +35,9 @@
 
 /* USER CODE BEGIN Includes */
 
-#define ARM_MATH_CM4
-#include "arm_math.h"
-#include "codec.h"
+	#define ARM_MATH_CM4
+	#include "arm_math.h"
+	#include "codec.h"
 
 /* USER CODE END Includes */
 
@@ -72,32 +72,29 @@ static void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN 0 */
 
-// Buffers de comunicacion I2S
-uint32_t buffer_rx[BUFFER_LENGTH*2] = {0};
-//uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
-//												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
-uint32_t buffer_tx[BUFFER_LENGTH*2] = {0};
+	// Manejo de los callback												
+	uint8_t toggle_buffer = 0;
 
-// Buffers auxiliares para realizar dsp												
-uint32_t *buffer_tx_aux;
-uint32_t *buffer_rx_aux;
+	// Buffers de comunicacion I2S
+	uint32_t buffer_rx[BUFFER_LENGTH*2] = {0};
+	uint32_t buffer_tx[BUFFER_LENGTH*2] = {0};
 
-//// Buffers de 32bits
-//uint32_t *buffer32_tx = (uint32_t *) buffer_tx;
-//uint32_t *buffer32_rx = (uint32_t *) buffer_rx;
+	// Punteros auxiliares para realizar dsp												
+	uint32_t *buffer_tx_aux;
+	uint32_t *buffer_rx_aux;
 
-// Manejo de los callback												
-uint8_t toggle_buffer = 0;
+	// Buffers dsp
+	q31_t canal_L[BUFFER_LENGTH/4] = {0};
+	q31_t canal_R[BUFFER_LENGTH/4] = {0};
+	q31_t suma[BUFFER_LENGTH/4] = {0};
+	q31_t resta[BUFFER_LENGTH/4] = {0};
+	q31_t mpx[BUFFER_LENGTH/4] = {0};
+	q31_t lowpassfilter[FILTER_LENGTH] = {0};
+	q31_t piloto19k[BUFFER_LENGTH/4] = {0};
+	q31_t piloto38k[BUFFER_LENGTH/4] = {0};
 
-// Armado de los canales
-volatile uint8_t CANAL = CH_L_1;
-
-
-// Canales
-q31_t canal_L[BUFFER_LENGTH] = {0};
-q31_t canal_R[BUFFER_LENGTH] = {0};
-q31_t suma[BUFFER_LENGTH/4] = {0};
-q31_t resta[BUFFER_LENGTH/4] = {0};
+	// Armado de los canales
+	volatile uint8_t CANAL = CH_L_1;
 
 /* USER CODE END 0 */
 
@@ -144,12 +141,6 @@ int main(void)
 //	float32_t pDst[BUFFER_LENGTH];
 	
 
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Pruebas I2S_3 // TX mode // DMA // 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 	buffer_tx_aux = buffer_tx;
 	
 	toggle_buffer = BUFFER_A;
@@ -161,11 +152,7 @@ int main(void)
 	
 	AK4621EF_init();
 
-
 	HAL_GPIO_WritePin(TEST_PIN_GPIO_Port, TEST_PIN_Pin, GPIO_PIN_RESET);
- 
-//	uint32_t i = 0;
-
 	
   /* USER CODE END 2 */
 
@@ -179,12 +166,6 @@ int main(void)
 		
 		led_secuencia();
 		dma_tx_rx();
-		
-
-
-		
-
-
 
   }
 	

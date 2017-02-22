@@ -73,18 +73,32 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN 0 */
 
 // Buffers de comunicacion I2S
-uint32_t buffer_rx[16] = {0};
+uint32_t buffer_rx[BUFFER_LENGTH*2] = {0};
 //uint32_t buffer_tx[8] = {0x00001111, 0x22223333, 0x44445555 ,0x66667777,
 //												0x88889999, 0xAAAABBBB, 0xCCCCDDDD ,0xEEEEFFFF};
-uint32_t buffer_tx[16] = {0};
+uint32_t buffer_tx[BUFFER_LENGTH*2] = {0};
 
 // Buffers auxiliares para realizar dsp												
 uint32_t *buffer_tx_aux;
 uint32_t *buffer_rx_aux;
 
+//// Buffers de 32bits
+//uint32_t *buffer32_tx = (uint32_t *) buffer_tx;
+//uint32_t *buffer32_rx = (uint32_t *) buffer_rx;
+
 // Manejo de los callback												
-uint8_t toggle_buffer = 0;	
-														
+uint8_t toggle_buffer = 0;
+
+// Armado de los canales
+volatile uint8_t CANAL = CH_L_1;
+
+
+// Canales
+q31_t canal_L[BUFFER_LENGTH] = {0};
+q31_t canal_R[BUFFER_LENGTH] = {0};
+q31_t suma[BUFFER_LENGTH/4] = {0};
+q31_t resta[BUFFER_LENGTH/4] = {0};
+
 /* USER CODE END 0 */
 
 int main(void)
@@ -166,40 +180,10 @@ int main(void)
 		led_secuencia();
 		dma_tx_rx();
 		
-//		if(i >= 1000)
-//		{
-//			i = 0;
-//		}
-//		i++;
-		
+
 
 		
-//		//*********************************************************
-//		arm_mult_f32(pSrcA, pSrcB, pDst, blockSize );	
-//		//void arm_mult_f32(float32_t * pSrcA, float32_t * pSrcB, float32_t * pDst, uint32_t blockSize );	
-//		//[in]	*pSrcA	points to the first input vector
-//		//[in]	*pSrcB	points to the second input vector
-//		//[out]	*pDst	points to the output vector
-//		//[in]	blockSize	number of samples in each vector
-//		
-//		arm_add_f32 (pSrcA, pSrcB, pDst, blockSize);
-//		//[in]	*pSrcA	points to the first input vector
-//		//[in]	*pSrcB	points to the second input vector
-//		//[out]	*pDst	points to the output vector
-//		//[in]	blockSize	number of samples in each vector
-//		
-//		arm_sub_f32 (pSrcA, pSrcB, pDst, blockSize);	
-//		//[in]	*pSrcA	points to the first input vector
-//		//[in]	*pSrcB	points to the second input vector
-//		//[out]	*pDst	points to the output vector
-//		//[in]	blockSize	number of samples in each vector
- 
-//	arm_biquad_cascade_df2T_f32(S,pSrcA,pDst,blockSize);
-	
-//	[in]	*S	points to an instance of the filter data structure.
-//	[in]	*pSrc	points to the block of input data.
-//	[out]	*pDst	points to the block of output data
-//	[in]	blockSize	number of samples to process.
+
 
 
   }

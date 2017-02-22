@@ -8,6 +8,14 @@
 
 #include "stm32f4xx.h"                  // Device header
 #include "RTE_Components.h"             // Component selection
+#include "stm32f4xx_hal.h"
+#define ARM_MATH_CM4
+#include "arm_math.h"
+
+//===========================CONFIG=========================//
+
+#define LOOPBACK 				0
+#define	MPX							!LOOPBACK
 
 //===========================DEFINES=========================//
 
@@ -35,6 +43,12 @@
 // Init transsmision
 #define BUFFER_LENGTH 	4
 
+// Separacion de canales
+#define CH_L_1					1
+#define CH_L_2					2
+#define CH_R_1					3
+#define CH_R_2					4
+
 //===========================VARIABLES=========================//
 
 // Handlers de los perifericos utilizados
@@ -48,8 +62,8 @@ extern I2S_HandleTypeDef hi2s3;
 extern SPI_HandleTypeDef hspi1;
 
 // Buffers de comunicacion I2S
-extern uint32_t buffer_tx[16];
-extern uint32_t buffer_rx[16];
+extern uint32_t buffer_tx[BUFFER_LENGTH*2];
+extern uint32_t buffer_rx[BUFFER_LENGTH*2];
 
 // Buffers auxiliares para realizar dsp
 extern uint32_t *buffer_tx_aux;
@@ -57,6 +71,15 @@ extern uint32_t *buffer_rx_aux;
 
 // Manejo de los callback
 extern uint8_t toggle_buffer;
+
+// Canales
+extern q31_t canal_L[BUFFER_LENGTH];
+extern q31_t canal_R[BUFFER_LENGTH];
+extern q31_t suma[BUFFER_LENGTH/4];
+extern q31_t resta[BUFFER_LENGTH/4];
+
+// Armado de los canales
+extern volatile uint8_t CANAL;
 
 //===========================Prototipos=========================//
 

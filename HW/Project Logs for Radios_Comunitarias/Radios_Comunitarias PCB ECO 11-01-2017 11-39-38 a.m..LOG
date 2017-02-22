@@ -1,0 +1,12 @@
+Added Component: Designator=U12(Conn_2x4)
+Added Pin To Net: NetName=SPI1_MOSI Pin=U12-2
+Added Pin To Net: NetName=SPI1_SCK Pin=U12-3
+Added Pin To Net: NetName=SPI1_MISO Pin=U12-5
+Added Pin To Net: NetName=DGND Pin=U12-8
+Added Pin To Net: NetName=C\S\ Pin=U10-P1.7
+Added Pin To Net: NetName=C\S\ Pin=U10-P1.7
+Added Pin To Net: NetName=C\S\ Pin=U12-4
+Added Net: Name=C\S\
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component  EXPANSION
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U10 STM32F4Discovery
+Added Member To Class: ClassName=Discovery y AK4621 Member=Component U12 DDS

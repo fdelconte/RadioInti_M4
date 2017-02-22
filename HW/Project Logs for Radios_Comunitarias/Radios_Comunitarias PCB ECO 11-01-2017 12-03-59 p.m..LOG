@@ -1,0 +1,9 @@
+Added Pin To Net: NetName=DGND Pin=U12-6
+Added Pin To Net: NetName=I/0UPDATE Pin=U10-P1.10
+Added Pin To Net: NetName=I/0UPDATE Pin=U10-P1.10
+Added Pin To Net: NetName=I/0UPDATE Pin=U12-1
+Added Net: Name=I/0UPDATE
+Added Pin To Net: NetName=RESET Pin=U10-P1.14
+Added Pin To Net: NetName=RESET Pin=U10-P1.14
+Added Pin To Net: NetName=RESET Pin=U12-7
+Added Net: Name=RESET

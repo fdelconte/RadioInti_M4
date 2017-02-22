@@ -1,36 +1,36 @@
 Protel Design System Design Rule Check
 PCB File : D:\Program Files\INTI\Transmitter\RadioInti_M4\HW\Radios_Comunitarias.PcbDoc
-Date     : 10/01/2017
-Time     : 09:40:07 p.m.
+Date     : 11/01/2017
+Time     : 03:26:25 p.m.
 
-Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Processing Rule : Clearance Constraint (Gap=20mil) (InPolygon),(All)
 Rule Violations :0
 
-Processing Rule : Un-Routed Net Constraint ( (All) )
-Rule Violations :0
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(88.583mil,88.583mil)  Multi-Layer
+   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(88.583mil,3848.425mil)  Multi-Layer
+   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(5816.929mil,88.583mil)  Multi-Layer
+   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(5816.929mil,3848.425mil)  Multi-Layer
+Rule Violations :4
 
-Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
-Rule Violations :0
-
-Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=20mil) (Air Gap=20mil) (Entries=4) (All)
+Processing Rule : Height Constraint (Min=0mil) (Max=1181.102mil) (Prefered=500mil) (All)
 Rule Violations :0
 
 Processing Rule : Width Constraint (Min=6mil) (Max=20mil) (Preferred=10mil) (All)
 Rule Violations :0
 
-Processing Rule : Height Constraint (Min=0mil) (Max=1181.102mil) (Prefered=500mil) (All)
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=20mil) (Air Gap=20mil) (Entries=4) (All)
 Rule Violations :0
 
-Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
-   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(5816.929mil,3848.425mil)  Multi-Layer
-   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(5816.929mil,88.583mil)  Multi-Layer
-   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(88.583mil,3848.425mil)  Multi-Layer
-   Violation between Hole Size Constraint (118.11mil > 100mil) : Pad Free-(88.583mil,88.583mil)  Multi-Layer
-Rule Violations :4
+Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
+Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=20mil) (InPolygon),(All)
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
 Rule Violations :0
 
 
 Violations Detected : 4
-Time Elapsed        : 00:00:02
+Time Elapsed        : 00:00:03

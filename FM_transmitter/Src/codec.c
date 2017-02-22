@@ -221,20 +221,20 @@ void dma_tx_rx ( void )
 			arm_fir_q31( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
 			arm_fir_q31( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
 		
-			// Armo el vector con la suma			L+R
-			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
-			
-			// Armo el vector con la resta		L-R
-			arm_sub_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha (+1)
-		
-			// Desplazo en frecuencia				 (L-R)*piloto38KHz
-			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
-		
-			// Armo mpx con L+R y L-R
-			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Necesita un desplazamiento hacia la derecha (+2)
+//			// Armo el vector con la suma			L+R
+//			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
 
-			// Agrego el piloto
-			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
+//			// Armo el vector con la resta		L-R
+//			arm_sub_q31( (q31_t *) canal_L_filtrado, (q31_t *) canal_R_filtrado, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha (+1)
+//		
+//			// Desplazo en frecuencia				 (L-R)*piloto38KHz
+//			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
+//		
+//			// Armo mpx con L+R y L-R
+//			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Necesita un desplazamiento hacia la derecha (+2)
+
+//			// Agrego el piloto
+//			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
 
 			#if ONLY_LPF
 				// Rearmo el vector de salida
@@ -243,8 +243,8 @@ void dma_tx_rx ( void )
 					buffer_tx_aux[i] = ((canal_L_filtrado[j] >> 16) & 0x0000FFFF);
 					buffer_tx_aux[i+2] = ((canal_R_filtrado[j] >> 16) & 0x0000FFFF);
 
-					buffer_tx_aux[i+1] = (canal_L_filtrado[j] & 0x0000FFFF);			
-					buffer_tx_aux[i+3] = (canal_R_filtrado[j] & 0x0000FFFF);			
+					buffer_tx_aux[i+1] = ((canal_L_filtrado[j] << 16) & 0x0000FFFF);			
+					buffer_tx_aux[i+3] = ((canal_R_filtrado[j] << 16) & 0x0000FFFF);			
 				}
 			#else
 				/*	Desplazamientos
@@ -257,17 +257,14 @@ void dma_tx_rx ( void )
 				*/
 
 				// Rearmamos el vector a ser transmitido según el protocolo I2S
-				for(i = 0 ; i < BUFFER_LENGTH ; i++)
+				for(i = 0, j = 0 ; i < BUFFER_LENGTH ; i+=4, j++)
 				{
-					suma[j] = suma[j] << 1;
-					buffer_tx_aux[i] = ((suma[j] >> 11) & 0x0000FFFF);
+//					suma[j] = suma[j] << 1;
+					buffer_tx_aux[i] = ((suma[j] >> 9) & 0x0000FFFF);
 					buffer_tx_aux[i+2] = buffer_tx_aux[i];
 
-					buffer_tx_aux[i+1] = ((suma[j] << 5) & 0x0000FF00);
+					buffer_tx_aux[i+1] = ((suma[j] << 7) & 0x0000FF00);
 					buffer_tx_aux[i+3] = buffer_tx_aux[i+1];
-
-					i += 3;
-					j++;
 				}
 			#endif
 		

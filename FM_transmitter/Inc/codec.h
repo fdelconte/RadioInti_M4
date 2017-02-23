@@ -82,23 +82,26 @@ extern uint32_t *buffer_tx_aux;
 extern uint32_t *buffer_rx_aux;
 
 // Buffers dsp
-extern q31_t canal_L[BUFFER_LENGTH/4];
-extern q31_t canal_R[BUFFER_LENGTH/4];
-extern q31_t canal_L_filtrado[BUFFER_LENGTH/4];
-extern q31_t canal_R_filtrado[BUFFER_LENGTH/4];
-extern q31_t suma[BUFFER_LENGTH/4];
-extern q31_t resta[BUFFER_LENGTH/4];
-extern q31_t mpx[BUFFER_LENGTH/4];
-extern q31_t lowpassfilter[FILTER_LENGTH];
-extern q31_t piloto19k[BUFFER_LENGTH/4];
-extern q31_t piloto38k[BUFFER_LENGTH/4];
-extern q31_t pState[PSTATE_LENGTH];
+extern q31_t canal_L_q[BUFFER_LENGTH/4];
+extern float32_t *canal_L;
+extern q31_t canal_R_q[BUFFER_LENGTH/4];
+extern float32_t *canal_R;
+extern float32_t canal_L_filtrado[BUFFER_LENGTH/4];
+extern float32_t canal_R_filtrado[BUFFER_LENGTH/4];
+extern float32_t suma[BUFFER_LENGTH/4];
+extern float32_t resta[BUFFER_LENGTH/4];
+extern float32_t mpx[BUFFER_LENGTH/4];
+extern q31_t mpx_q[BUFFER_LENGTH/4];
+extern float32_t lowpassfilter[FILTER_LENGTH];
+extern float32_t piloto19k[BUFFER_LENGTH/4];
+extern float32_t piloto38k[BUFFER_LENGTH/4];
+extern float32_t pState[PSTATE_LENGTH];
 
 // Armado de los canales
 extern volatile uint8_t CANAL;
 
 // Filtro digital
-extern arm_fir_instance_q31 lowpass;
+extern arm_fir_instance_f32 lowpass;
 
 //===========================Prototipos=========================//
 

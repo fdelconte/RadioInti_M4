@@ -158,7 +158,13 @@ void AK4621EF_init ( void )
 	HAL_GPIO_WritePin(CSN_GPIO_Port, CSN_Pin, GPIO_PIN_SET);						// Subo la linea de CSN	
 		
 	// Inicializo el filtro digital
-	arm_fir_init_q31( &lowpass, FILTER_LENGTH, lowpassfilter, pState, BUFFER_LENGTH/4 );
+	arm_fir_init_f32( &lowpass, FILTER_LENGTH, lowpassfilter, pState, BUFFER_LENGTH/4 );
+	
+		
+//	for(int i = 0 ; i < BUFFER_LENGTH/4 ; i++)
+//	{
+//			piloto19k[i] = (piloto19k[i] >> 5);
+//	}	
 }
 //
 
@@ -188,24 +194,24 @@ void dma_tx_rx ( void )
 				// Separo la señal de entrada en dos vectores, uno para suma y otro para la resta
 				if( i == 0 || CANAL == CH_L_1 )
 				{
-					canal_L[j] = ((buffer_rx_aux[i] << 16) & 0xFFFF0000);// en vez de 16 para evitar el desborde
+					canal_L_q[j] = ((buffer_rx_aux[i] << 16) & 0xFFFF0000);// en vez de 16 para evitar el desborde
 					CANAL = CH_L_2;
 				}
 				else if( CANAL == CH_L_2 )
 				{
-					canal_L[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
-					canal_L[j] = canal_L[j] >> 8;
+					canal_L_q[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
+					canal_L_q[j] = canal_L_q[j] >> 2;
 					CANAL = CH_R_1;
 				}
 				else if( CANAL == CH_R_1 )
 				{
-					canal_R[j] = ((buffer_rx_aux[i] << 16) & 0xFFFF0000);
+					canal_R_q[j] = ((buffer_rx_aux[i] << 16) & 0xFFFF0000);
 					CANAL = CH_R_2;
 				}
 				else if( CANAL == CH_R_2 )
 				{
-					canal_R[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
-					canal_R[j] = canal_R[j] >> 8;
+					canal_R_q[j] |= (buffer_rx_aux[i] & 0x0000FFFF);
+					canal_R_q[j] = canal_R_q[j] >> 2;
 					CANAL = CH_L_1;
 					j++;
 				}
@@ -215,26 +221,42 @@ void dma_tx_rx ( void )
 		}		
 			
 		#if MPX
-	
-			// Filtro los dos canales de entrada
-			// Filtro FIR con fpaso 15KHz y fcorte 19KHz
-			arm_fir_q31( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
-			arm_fir_q31( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
 		
-//			// Armo el vector con la suma			L+R
-//			arm_add_q31( (q31_t *) canal_L, (q31_t *) canal_R, (q31_t *) suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
+		canal_R = (float32_t *) canal_R_q;
+		canal_L = (float32_t *) canal_L_q;
+		
+		
+		float32_t max_v;
+		uint32_t max_i;
+		
+		arm_abs_f32(canal_R, suma, BUFFER_LENGTH/4);
+		arm_max_f32(suma, BUFFER_LENGTH/4, &max_v, &max_i);
+		arm_scale_f32(canal_R, 1/2*max_v, canal_R, BUFFER_LENGTH/4);
+		
+		arm_abs_f32(canal_L, suma, BUFFER_LENGTH/4);
+		arm_max_f32(suma, BUFFER_LENGTH/4, &max_v, &max_i);
+		arm_scale_f32(canal_L, 1/2*max_v, canal_L, BUFFER_LENGTH/4);
+			
+	
+//			// Filtro los dos canales de entrada
+//			// Filtro FIR con fpaso 15KHz y fcorte 19KHz
+//			arm_fir_f32( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
+//			arm_fir_f32( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
+		
+			// Armo el vector con la suma			L+R
+			arm_add_f32( (float32_t *) canal_L, (float32_t *) canal_R, suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
 
-//			// Armo el vector con la resta		L-R
-//			arm_sub_q31( (q31_t *) canal_L_filtrado, (q31_t *) canal_R_filtrado, (q31_t *) resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha (+1)
-//		
-//			// Desplazo en frecuencia				 (L-R)*piloto38KHz
-//			arm_mult_q31( (q31_t *) resta, (q31_t *) piloto38k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
-//		
-//			// Armo mpx con L+R y L-R
-//			arm_add_q31( (q31_t *) mpx, (q31_t *) suma, (q31_t *) resta, (BUFFER_LENGTH/4) );							// Necesita un desplazamiento hacia la derecha (+2)
+			// Armo el vector con la resta		L-R
+			arm_sub_f32( (float32_t *) canal_L, (float32_t *) canal_R, resta, (BUFFER_LENGTH/4) );			// Necesita un desplazamiento hacia la derecha (+1)
+		
+			// Desplazo en frecuencia				 (L-R)*piloto38KHz
+			arm_mult_f32( resta, piloto38k, mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
+		
+			// Armo mpx con L+R y L-R
+			arm_add_f32( mpx, suma, resta, (BUFFER_LENGTH/4) );							// Necesita un desplazamiento hacia la derecha (+2)
 
 //			// Agrego el piloto
-//			arm_add_q31( (q31_t *) resta, (q31_t *) piloto19k, (q31_t *) mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
+//			arm_add_f32( resta, piloto19k, mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
 
 			#if ONLY_LPF
 				// Rearmo el vector de salida
@@ -243,8 +265,8 @@ void dma_tx_rx ( void )
 					buffer_tx_aux[i] = ((canal_L_filtrado[j] >> 16) & 0x0000FFFF);
 					buffer_tx_aux[i+2] = ((canal_R_filtrado[j] >> 16) & 0x0000FFFF);
 
-					buffer_tx_aux[i+1] = ((canal_L_filtrado[j] << 16) & 0x0000FFFF);			
-					buffer_tx_aux[i+3] = ((canal_R_filtrado[j] << 16) & 0x0000FFFF);			
+					buffer_tx_aux[i+1] = ((canal_L_filtrado[j] << 0) & 0x0000FFFF);			
+					buffer_tx_aux[i+3] = ((canal_R_filtrado[j] << 0) & 0x0000FFFF);			
 				}
 			#else
 				/*	Desplazamientos
@@ -259,12 +281,14 @@ void dma_tx_rx ( void )
 				// Rearmamos el vector a ser transmitido según el protocolo I2S
 				for(i = 0, j = 0 ; i < BUFFER_LENGTH ; i+=4, j++)
 				{
-//					suma[j] = suma[j] << 1;
-					buffer_tx_aux[i] = ((suma[j] >> 9) & 0x0000FFFF);
-					buffer_tx_aux[i+2] = buffer_tx_aux[i];
+						arm_float_to_q31(canal_L, mpx_q, BUFFER_LENGTH/4);
+//						mpx_q = (q31_t *) canal_L;
+	//					suma[j] = suma[j] << 1;
+						buffer_tx_aux[i] = ((mpx_q[j] >> 16) & 0x0000FFFF);
+						buffer_tx_aux[i+2] = buffer_tx_aux[i];
 
-					buffer_tx_aux[i+1] = ((suma[j] << 7) & 0x0000FF00);
-					buffer_tx_aux[i+3] = buffer_tx_aux[i+1];
+						buffer_tx_aux[i+1] = ((mpx_q[j] << 0) & 0x0000FF00);
+						buffer_tx_aux[i+3] = buffer_tx_aux[i+1];
 				}
 			#endif
 		

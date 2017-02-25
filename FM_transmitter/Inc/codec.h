@@ -46,8 +46,9 @@
 
 // Vector length
 #define BUFFER_LENGTH 			2048
-#define FILTER_LENGTH 			92
-#define PILOTO_19k_LENGTH 	375
+#define FILTER_LENGTH 			75
+#define PILOTO_19k_LENGTH 	376
+#define PILOTO_38k_LENGTH 	368
 
 // Separacion de canales
 #define CH_L_1					1
@@ -97,7 +98,8 @@ extern q31_t mpx_q[BUFFER_LENGTH/4];
 extern float32_t lowpassfilter[FILTER_LENGTH];
 extern uint32_t piloto19k_idx;
 extern float32_t piloto19k[PILOTO_19k_LENGTH];
-extern float32_t piloto38k[BUFFER_LENGTH/4];
+extern uint32_t piloto38k_idx;
+extern float32_t piloto38k[PILOTO_38k_LENGTH];
 extern float32_t pState[PSTATE_LENGTH];
 
 // Armado de los canales

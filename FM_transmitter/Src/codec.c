@@ -251,10 +251,10 @@ void dma_tx_rx ( void )
 		arm_scale_f32(canal_R, 1/(2*max_v), canal_R, BUFFER_LENGTH/4);
 			
 	
-////			// Filtro los dos canales de entrada
-////			// Filtro FIR con fpaso 15KHz y fcorte 19KHz
-////			arm_fir_f32( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
-////			arm_fir_f32( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
+			// Filtro los dos canales de entrada
+			// Filtro FIR con fpaso 15KHz y fcorte 19KHz
+//			arm_fir_f32( &lowpass, canal_L, canal_L_filtrado, BUFFER_LENGTH/4 );
+//			arm_fir_f32( &lowpass, canal_R, canal_R_filtrado, BUFFER_LENGTH/4 );
 		
 			// Armo el vector con la suma			L+R
 			arm_add_f32( (float32_t *) canal_L, (float32_t *) canal_R, suma, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+1)
@@ -269,9 +269,22 @@ void dma_tx_rx ( void )
 			arm_abs_f32(resta, aux, BUFFER_LENGTH/4);
 			arm_max_f32(aux, BUFFER_LENGTH/4, &max_v, &max_i);
 			arm_scale_f32(resta, 1/(2*max_v), resta, BUFFER_LENGTH/4);
+
+			// Se hace ciclico el piloto de 38k para que no salga cortado
+			tam_restante = 512;
+			arm_copy_f32(piloto38k + piloto38k_idx, aux, PILOTO_38k_LENGTH - piloto38k_idx);
+			tam_restante = tam_restante - (PILOTO_38k_LENGTH - piloto38k_idx);
+			if( tam_restante > PILOTO_38k_LENGTH )
+			{
+				arm_copy_f32(piloto38k, aux + PILOTO_38k_LENGTH - piloto38k_idx, PILOTO_38k_LENGTH);
+				tam_restante -= PILOTO_38k_LENGTH;
+				piloto38k_idx -= PILOTO_38k_LENGTH;
+			}	
+			arm_copy_f32(piloto38k, aux + PILOTO_38k_LENGTH - piloto38k_idx, tam_restante);
+			piloto38k_idx = tam_restante;
 		
 			// Desplazo en frecuencia				 (L-R)*piloto38KHz
-			arm_mult_f32( resta, piloto38k, mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
+			arm_mult_f32( resta, aux, mpx, (BUFFER_LENGTH/4) );				// No necesita desplazamientos
 
 			arm_abs_f32(mpx, aux, BUFFER_LENGTH/4);
 			arm_max_f32(aux, BUFFER_LENGTH/4, &max_v, &max_i);
@@ -284,7 +297,7 @@ void dma_tx_rx ( void )
 			arm_max_f32(aux, BUFFER_LENGTH/4, &max_v, &max_i);
 			arm_scale_f32(resta, 1/(2*max_v), resta, BUFFER_LENGTH/4);
 
-			
+			// Se hace ciclico el piloto de 19k para que no salga cortado
 			tam_restante = 512;
 			arm_copy_f32(piloto19k + piloto19k_idx, aux, PILOTO_19k_LENGTH - piloto19k_idx);
 			tam_restante = tam_restante - (PILOTO_19k_LENGTH - piloto19k_idx);
@@ -297,23 +310,23 @@ void dma_tx_rx ( void )
 			arm_copy_f32(piloto19k, aux + PILOTO_19k_LENGTH - piloto19k_idx, tam_restante);
 			piloto19k_idx = tam_restante;
 
-			// Agrego el piloto
+			// Agrego el piloto de 19k
 			arm_add_f32( resta, aux, mpx, (BUFFER_LENGTH/4) );				// Necesita un desplazamiento hacia la derecha (+3)
 
 			#if ONLY_LPF
 			
 				// Escalamos el vector
-				arm_abs_f32(canal_R, suma, BUFFER_LENGTH/4);
+				arm_abs_f32(canal_R_filtrado, suma, BUFFER_LENGTH/4);
 				arm_max_f32(suma, BUFFER_LENGTH/4, &max_v, &max_i);
-				arm_scale_f32(canal_R, 1/(2*max_v), canal_R, BUFFER_LENGTH/4);
+				arm_scale_f32(canal_R_filtrado, 1/(2*max_v), canal_R_filtrado, BUFFER_LENGTH/4);
 				
-				arm_float_to_q31(canal_R, canal_R_q, BUFFER_LENGTH/4);
+				arm_float_to_q31(canal_R_filtrado, canal_R_q, BUFFER_LENGTH/4);
 			
-				arm_abs_f32(canal_L, suma, BUFFER_LENGTH/4);
+				arm_abs_f32(canal_L_filtrado, suma, BUFFER_LENGTH/4);
 				arm_max_f32(suma, BUFFER_LENGTH/4, &max_v, &max_i);
-				arm_scale_f32(canal_L, 1/(2*max_v), canal_L, BUFFER_LENGTH/4);
+				arm_scale_f32(canal_L_filtrado, 1/(2*max_v), canal_L_filtrado, BUFFER_LENGTH/4);
 				
-				arm_float_to_q31(canal_L, canal_L_q, BUFFER_LENGTH/4);
+				arm_float_to_q31(canal_L_filtrado, canal_L_q, BUFFER_LENGTH/4);
 			
 				// Rearmo el vector de salida
 				for(i = 0, j=0 ; i < BUFFER_LENGTH ; i+=4, j++)
@@ -337,6 +350,12 @@ void dma_tx_rx ( void )
 				*/
 
 				// Escalamos el vector
+//				arm_abs_f32(aux, mpx, BUFFER_LENGTH/4);
+//				arm_max_f32(mpx, BUFFER_LENGTH/4, &max_v, &max_i);
+//				arm_scale_f32(aux, 1/(2*max_v), aux, BUFFER_LENGTH/4);
+//				
+//				arm_float_to_q31(aux, mpx_q, BUFFER_LENGTH/4);
+				
 				arm_abs_f32(mpx, aux, BUFFER_LENGTH/4);
 				arm_max_f32(aux, BUFFER_LENGTH/4, &max_v, &max_i);
 				arm_scale_f32(mpx, 1/(2*max_v), mpx, BUFFER_LENGTH/4);

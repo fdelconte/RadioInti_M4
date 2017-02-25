@@ -45,8 +45,9 @@
 #define	BUFFER_B				1	
 
 // Vector length
-#define BUFFER_LENGTH 	2048
-#define FILTER_LENGTH 	92
+#define BUFFER_LENGTH 			2048
+#define FILTER_LENGTH 			92
+#define PILOTO_19k_LENGTH 	375
 
 // Separacion de canales
 #define CH_L_1					1
@@ -83,17 +84,19 @@ extern uint32_t *buffer_rx_aux;
 
 // Buffers dsp
 extern q31_t canal_L_q[BUFFER_LENGTH/4];
-extern float32_t *canal_L;
+extern float32_t canal_L[BUFFER_LENGTH/4];
 extern q31_t canal_R_q[BUFFER_LENGTH/4];
-extern float32_t *canal_R;
+extern float32_t canal_R[BUFFER_LENGTH/4];
 extern float32_t canal_L_filtrado[BUFFER_LENGTH/4];
 extern float32_t canal_R_filtrado[BUFFER_LENGTH/4];
 extern float32_t suma[BUFFER_LENGTH/4];
 extern float32_t resta[BUFFER_LENGTH/4];
+extern float32_t aux[BUFFER_LENGTH/4];
 extern float32_t mpx[BUFFER_LENGTH/4];
 extern q31_t mpx_q[BUFFER_LENGTH/4];
 extern float32_t lowpassfilter[FILTER_LENGTH];
-extern float32_t piloto19k[BUFFER_LENGTH/4];
+extern uint32_t piloto19k_idx;
+extern float32_t piloto19k[PILOTO_19k_LENGTH];
 extern float32_t piloto38k[BUFFER_LENGTH/4];
 extern float32_t pState[PSTATE_LENGTH];
 
